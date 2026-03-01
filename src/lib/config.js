@@ -6,8 +6,10 @@ const DEFAULT_CONFIG = {
   siteName: "Scan 2 Pass",
   brandLogoUrl: "/logo-default.svg",
   faviconUrl: "/logo-default.svg",
-  headerText:
+  headerTextEn:
     "Fill in your details to continue to the private destination content.",
+  headerTextFr:
+    "Renseignez vos informations pour continuer vers le contenu prive.",
   redirectUrl: DEFAULT_PROJECT_URL,
   formSubmitReceiver: DEFAULT_RECEIVER,
   formSubmitEndpoint: `https://formsubmit.co/${DEFAULT_RECEIVER}`,
@@ -207,9 +209,14 @@ export function resolveAppConfig(env = {}) {
     env.VITE_FAVICON_URL,
     brandLogoUrl || DEFAULT_CONFIG.faviconUrl,
   );
-  const headerText = cleanText(
-    env.VITE_HEADER_TEXT,
-    DEFAULT_CONFIG.headerText,
+  const headerTextFallback = cleanText(env.VITE_HEADER_TEXT, "");
+  const headerTextEn = cleanText(
+    env.VITE_HEADER_TEXT_EN,
+    headerTextFallback || DEFAULT_CONFIG.headerTextEn,
+  );
+  const headerTextFr = cleanText(
+    env.VITE_HEADER_TEXT_FR,
+    headerTextFallback || DEFAULT_CONFIG.headerTextFr,
   );
   const redirectUrl = cleanUrl(env.VITE_REDIRECT_URL, DEFAULT_CONFIG.redirectUrl);
   const formSubmitReceiver = cleanEmail(
@@ -268,7 +275,11 @@ export function resolveAppConfig(env = {}) {
     siteName,
     brandLogoUrl,
     faviconUrl,
-    headerText,
+    headerText: headerTextEn,
+    headerTextByLocale: {
+      en: headerTextEn,
+      fr: headerTextFr,
+    },
     redirectUrl,
     formSubmitReceiver,
     formSubmitEndpoint,

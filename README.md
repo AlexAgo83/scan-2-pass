@@ -25,7 +25,9 @@ All frontend env variables are public at runtime. Do not place secrets in `.env`
 - `VITE_SITE_NAME`: site name shown on page.
 - `VITE_BRAND_LOGO_URL`: logo path or URL.
 - `VITE_FAVICON_URL`: favicon path or URL (`/favicon.svg` or `https://...`).
-- `VITE_HEADER_TEXT`: header text above the form.
+- `VITE_HEADER_TEXT`: header text fallback above the form.
+- `VITE_HEADER_TEXT_EN`: header text shown when locale is English.
+- `VITE_HEADER_TEXT_FR`: header text shown when locale is French.
 - `VITE_HEADER_TEXT_FONT_SIZE`: header font size (`px`, `rem`, `em`, `vw`, or fallback default).
 - `VITE_HEADER_TEXT_FONT_WEIGHT`: header font weight (`normal`, `bold`, or numeric `400-900`).
 - `VITE_HEADER_TEXT_FONT_STYLE`: header font style (`normal`, `italic`, `oblique`).
@@ -73,7 +75,7 @@ Users can always edit prefilled values before submission.
 
 - Default UI language is English.
 - If browser/device locale starts with `fr` (for example `fr-FR`, `fr-CA`), non-configurable UI text is shown in French.
-- Environment-configured text (for example `VITE_HEADER_TEXT`) is not overridden by locale detection.
+- Environment-configured header text can be localized with `VITE_HEADER_TEXT_EN` and `VITE_HEADER_TEXT_FR` (with `VITE_HEADER_TEXT` as fallback).
 - If locale detection is unavailable, UI falls back to English.
 
 ## Render deployment

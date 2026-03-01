@@ -8,6 +8,10 @@ describe("resolveAppConfig", () => {
     expect(config.projectUrl).toBe("https://github.com/AlexAgo83/scan-2-pass");
     expect(config.siteName).toBe("Scan 2 Pass");
     expect(config.faviconUrl).toBe("/logo-default.svg");
+    expect(config.headerTextByLocale).toEqual({
+      en: "Fill in your details to continue to the private destination content.",
+      fr: "Renseignez vos informations pour continuer vers le contenu prive.",
+    });
     expect(config.formSubmitEndpoint).toBe(
       "https://formsubmit.co/a.agostini.fr@gmail.com",
     );
@@ -63,6 +67,30 @@ describe("resolveAppConfig", () => {
     });
 
     expect(config.faviconUrl).toBe("/logo-default.svg");
+  });
+
+  test("localizes header text with dedicated EN/FR variables", () => {
+    const config = resolveAppConfig({
+      VITE_HEADER_TEXT_EN: "Welcome to Circle Mobility",
+      VITE_HEADER_TEXT_FR: "Bienvenue chez Circle Mobility",
+    });
+
+    expect(config.headerTextByLocale).toEqual({
+      en: "Welcome to Circle Mobility",
+      fr: "Bienvenue chez Circle Mobility",
+    });
+    expect(config.headerText).toBe("Welcome to Circle Mobility");
+  });
+
+  test("uses VITE_HEADER_TEXT as fallback for EN/FR header text", () => {
+    const config = resolveAppConfig({
+      VITE_HEADER_TEXT: "Continue to access content",
+    });
+
+    expect(config.headerTextByLocale).toEqual({
+      en: "Continue to access content",
+      fr: "Continue to access content",
+    });
   });
 
   test("applies valid header typography values from env", () => {

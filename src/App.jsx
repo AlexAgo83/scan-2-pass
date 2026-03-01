@@ -13,6 +13,12 @@ function App() {
     [],
   );
   const copy = useMemo(() => getTranslations(locale), [locale]);
+  const headerText = useMemo(() => {
+    if (locale === "fr") {
+      return config.headerTextByLocale?.fr || config.headerText;
+    }
+    return config.headerTextByLocale?.en || config.headerText;
+  }, [config.headerText, config.headerTextByLocale, locale]);
   const [formData, setFormData] = useState(() =>
     resolveInitialFormData(
       { email: "", firstName: "", lastName: "" },
@@ -130,7 +136,7 @@ function App() {
         <header className="landing-header">
           <img className="brand-logo" src={config.brandLogoUrl} alt={copy.form.logoAlt} />
           <p className="site-name">{config.siteName}</p>
-          <h1 className="header-text">{config.headerText}</h1>
+          <h1 className="header-text">{headerText}</h1>
         </header>
 
         <form
