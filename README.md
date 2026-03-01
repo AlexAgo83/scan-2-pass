@@ -9,6 +9,9 @@ Mobile-first static landing page (Vite + React + TypeScript) designed for QR acc
 ![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF?logo=vite&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=black)
 
+<img width="652" height="619" alt="image" src="https://github.com/user-attachments/assets/ee24ff84-716b-4d8c-b0d9-9f8e85447536" />
+<img width="721" height="711" alt="image" src="https://github.com/user-attachments/assets/8ca6be84-7457-4bf8-b823-c81c1897a6df" />
+
 ## Stack
 
 - Vite + React + TypeScript
