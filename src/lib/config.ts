@@ -1,15 +1,57 @@
+export interface HeaderTypographyConfig {
+  fontSize: string;
+  fontWeight: string;
+  fontStyle: string;
+}
+
+export interface ThemeConfig {
+  primaryColor: string;
+  backgroundColor: string;
+  textColor: string;
+  fontFamily: string;
+  headingFontFamily: string;
+  fontUrl: string;
+}
+
+export interface HeaderTextByLocale {
+  en: string;
+  fr: string;
+}
+
+export interface AppConfig {
+  projectUrl: string;
+  siteName: string;
+  brandLogoUrl: string;
+  faviconUrl: string;
+  headerText: string;
+  headerTextByLocale: HeaderTextByLocale;
+  redirectUrl: string;
+  formSubmitReceiver: string;
+  formSubmitEndpoint: string;
+  formSubmitSubject: string;
+  formSubmitCaptcha: string;
+  headerTypography: HeaderTypographyConfig;
+  theme: ThemeConfig;
+}
+
+type EnvValue = string | boolean | number | null | undefined;
+
+export type AppEnv = Record<string, EnvValue>;
+
 const DEFAULT_RECEIVER = "a.agostini.fr@gmail.com";
 const DEFAULT_PROJECT_URL = "https://github.com/AlexAgo83/scan-2-pass";
 
-const DEFAULT_CONFIG = {
+const DEFAULT_CONFIG: Omit<AppConfig, "headerTextByLocale"> & {
+  headerTextEn: string;
+  headerTextFr: string;
+} = {
   projectUrl: DEFAULT_PROJECT_URL,
   siteName: "Scan 2 Pass",
   brandLogoUrl: "/logo-default.svg",
   faviconUrl: "/logo-default.svg",
-  headerTextEn:
-    "Fill in your details to continue to the private destination content.",
-  headerTextFr:
-    "Renseignez vos informations pour continuer vers le contenu prive.",
+  headerText: "Fill in your details to continue to the private destination content.",
+  headerTextEn: "Fill in your details to continue to the private destination content.",
+  headerTextFr: "Renseignez vos informations pour continuer vers le contenu prive.",
   redirectUrl: DEFAULT_PROJECT_URL,
   formSubmitReceiver: DEFAULT_RECEIVER,
   formSubmitEndpoint: `https://formsubmit.co/${DEFAULT_RECEIVER}`,
@@ -39,12 +81,12 @@ const COLOR_REGEX =
 const FONT_FAMILY_REGEX = /^[A-Za-z0-9,\-_'"\s]+$/;
 const FONT_SIZE_REGEX = /^(\d+(\.\d+)?)(px|rem|em|vw)$/;
 
-function cleanText(value, fallback) {
+function cleanText(value: EnvValue, fallback: string): string {
   const nextValue = typeof value === "string" ? value.trim() : "";
   return nextValue ? nextValue : fallback;
 }
 
-function cleanUrl(value, fallback) {
+function cleanUrl(value: EnvValue, fallback: string): string {
   const nextValue = cleanText(value, "");
   if (!nextValue) {
     return fallback;
@@ -61,7 +103,7 @@ function cleanUrl(value, fallback) {
   }
 }
 
-function cleanAssetUrl(value, fallback) {
+function cleanAssetUrl(value: EnvValue, fallback: string): string {
   const nextValue = cleanText(value, "");
   if (!nextValue) {
     return fallback;
@@ -82,12 +124,12 @@ function cleanAssetUrl(value, fallback) {
   }
 }
 
-function cleanColor(value, fallback) {
+function cleanColor(value: EnvValue, fallback: string): string {
   const nextValue = cleanText(value, "");
   return COLOR_REGEX.test(nextValue) ? nextValue : fallback;
 }
 
-function cleanFontFamily(value, fallback) {
+function cleanFontFamily(value: EnvValue, fallback: string): string {
   const nextValue = cleanText(value, "");
   if (!nextValue || nextValue.length > 140) {
     return fallback;
@@ -95,7 +137,7 @@ function cleanFontFamily(value, fallback) {
   return FONT_FAMILY_REGEX.test(nextValue) ? nextValue : fallback;
 }
 
-function cleanHeaderFontSize(value, fallback) {
+function cleanHeaderFontSize(value: EnvValue, fallback: string): string {
   const nextValue = cleanText(value, "");
   if (!nextValue) {
     return fallback;
@@ -113,7 +155,7 @@ function cleanHeaderFontSize(value, fallback) {
   return fallback;
 }
 
-function cleanHeaderFontWeight(value, fallback) {
+function cleanHeaderFontWeight(value: EnvValue, fallback: string): string {
   const nextValue = cleanText(value, "").toLowerCase();
   if (!nextValue) {
     return fallback;
@@ -131,7 +173,7 @@ function cleanHeaderFontWeight(value, fallback) {
   return fallback;
 }
 
-function cleanHeaderFontStyle(value, fallback) {
+function cleanHeaderFontStyle(value: EnvValue, fallback: string): string {
   const nextValue = cleanText(value, "").toLowerCase();
   if (
     nextValue === "normal" ||
@@ -143,7 +185,7 @@ function cleanHeaderFontStyle(value, fallback) {
   return fallback;
 }
 
-function cleanFontUrl(value) {
+function cleanFontUrl(value: EnvValue): string {
   const nextValue = cleanText(value, "");
   if (!nextValue) {
     return "";
@@ -163,7 +205,7 @@ function cleanFontUrl(value) {
   }
 }
 
-function cleanCaptcha(value, fallback) {
+function cleanCaptcha(value: EnvValue, fallback: string): string {
   const nextValue = cleanText(value, "").toLowerCase();
   if (nextValue === "true" || nextValue === "false") {
     return nextValue;
@@ -171,7 +213,7 @@ function cleanCaptcha(value, fallback) {
   return fallback;
 }
 
-function cleanEmail(value, fallback) {
+function cleanEmail(value: EnvValue, fallback: string): string {
   const nextValue = cleanText(value, "");
   if (EMAIL_REGEX.test(nextValue)) {
     return nextValue.toLowerCase();
@@ -179,7 +221,7 @@ function cleanEmail(value, fallback) {
   return fallback;
 }
 
-function cleanFormSubmitEndpoint(endpoint, receiver) {
+function cleanFormSubmitEndpoint(endpoint: EnvValue, receiver: string): string {
   const endpointValue = cleanText(endpoint, "");
   if (endpointValue) {
     try {
@@ -198,7 +240,7 @@ function cleanFormSubmitEndpoint(endpoint, receiver) {
   return `https://formsubmit.co/${receiver}`;
 }
 
-export function resolveAppConfig(env = {}) {
+export function resolveAppConfig(env: AppEnv = {}): AppConfig {
   const projectUrl = cleanUrl(env.VITE_PROJECT_URL, DEFAULT_CONFIG.projectUrl);
   const siteName = cleanText(env.VITE_SITE_NAME, DEFAULT_CONFIG.siteName);
   const brandLogoUrl = cleanText(
@@ -218,7 +260,10 @@ export function resolveAppConfig(env = {}) {
     env.VITE_HEADER_TEXT_FR,
     headerTextFallback || DEFAULT_CONFIG.headerTextFr,
   );
-  const redirectUrl = cleanUrl(env.VITE_REDIRECT_URL, DEFAULT_CONFIG.redirectUrl);
+  const redirectUrl = cleanUrl(
+    env.VITE_REDIRECT_URL,
+    DEFAULT_CONFIG.redirectUrl,
+  );
   const formSubmitReceiver = cleanEmail(
     env.VITE_FORMSUBMIT_RECEIVER,
     DEFAULT_CONFIG.formSubmitReceiver,

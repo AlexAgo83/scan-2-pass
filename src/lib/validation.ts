@@ -1,21 +1,32 @@
+import type { ContactFormData } from "./form-types";
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const DEFAULT_VALIDATION_MESSAGES = {
+export interface ValidationMessages {
+  firstNameRequired: string;
+  lastNameRequired: string;
+  emailRequired: string;
+  emailInvalid: string;
+}
+
+export type ValidationErrors = Partial<Record<keyof ContactFormData, string>>;
+
+export const DEFAULT_VALIDATION_MESSAGES: ValidationMessages = {
   firstNameRequired: "First name is required.",
   lastNameRequired: "Last name is required.",
   emailRequired: "Email is required.",
   emailInvalid: "Please enter a valid email address.",
 };
 
-function isBlank(value) {
+function isBlank(value: string | undefined | null): boolean {
   return !value || !value.trim();
 }
 
 export function validateFormInput(
-  formData,
-  messages = DEFAULT_VALIDATION_MESSAGES,
-) {
-  const errors = {};
+  formData: ContactFormData,
+  messages: ValidationMessages = DEFAULT_VALIDATION_MESSAGES,
+): ValidationErrors {
+  const errors: ValidationErrors = {};
 
   if (isBlank(formData.firstName)) {
     errors.firstName = messages.firstNameRequired;
@@ -34,6 +45,6 @@ export function validateFormInput(
   return errors;
 }
 
-export function hasValidationErrors(errors) {
+export function hasValidationErrors(errors: ValidationErrors): boolean {
   return Object.keys(errors).length > 0;
 }

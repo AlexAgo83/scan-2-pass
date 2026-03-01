@@ -1,14 +1,17 @@
 import { describe, expect, test } from "vitest";
+import type { StorageLike } from "./prefill";
 import { PREFILL_STORAGE_KEY, resolveInitialFormData } from "./prefill";
 
-function makeStorage(initialValue = null) {
-  const map = new Map();
+function makeStorage(initialValue: string | null = null): StorageLike {
+  const map = new Map<string, string>();
   if (initialValue !== null) {
     map.set(PREFILL_STORAGE_KEY, initialValue);
   }
   return {
     getItem: (key) => map.get(key) || null,
-    setItem: (key, value) => map.set(key, value),
+    setItem: (key, value) => {
+      map.set(key, value);
+    },
   };
 }
 
@@ -57,4 +60,3 @@ describe("resolveInitialFormData", () => {
     expect(initial.lastName).toBe("Doe");
   });
 });
-

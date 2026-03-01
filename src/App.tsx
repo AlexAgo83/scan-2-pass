@@ -1,32 +1,59 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type ChangeEvent,
+  type CSSProperties,
+  type FormEvent,
+} from "react";
 import { resolveAppConfig } from "./lib/config";
 import { getTranslations, resolveLocale } from "./lib/i18n";
 import { persistFormPrefill, resolveInitialFormData } from "./lib/prefill";
-import { hasValidationErrors, validateFormInput } from "./lib/validation";
+import {
+  hasValidationErrors,
+  validateFormInput,
+  type ValidationErrors,
+} from "./lib/validation";
+import type { ContactFormData } from "./lib/form-types";
 import "./App.css";
+
+const EMPTY_FORM_DATA: ContactFormData = {
+  email: "",
+  firstName: "",
+  lastName: "",
+};
+
+const FORM_FIELD_NAMES = ["email", "firstName", "lastName"] as const;
+type FormFieldName = (typeof FORM_FIELD_NAMES)[number];
+
+function isFormFieldName(value: string): value is FormFieldName {
+  return FORM_FIELD_NAMES.includes(value as FormFieldName);
+}
 
 function App() {
   const config = useMemo(() => resolveAppConfig(import.meta.env), []);
   const locale = useMemo(
     () =>
-      resolveLocale(typeof window !== "undefined" ? window.navigator : undefined),
+      resolveLocale(
+        typeof window !== "undefined" ? window.navigator : undefined,
+      ),
     [],
   );
   const copy = useMemo(() => getTranslations(locale), [locale]);
   const headerText = useMemo(() => {
     if (locale === "fr") {
-      return config.headerTextByLocale?.fr || config.headerText;
+      return config.headerTextByLocale.fr || config.headerText;
     }
-    return config.headerTextByLocale?.en || config.headerText;
+    return config.headerTextByLocale.en || config.headerText;
   }, [config.headerText, config.headerTextByLocale, locale]);
-  const [formData, setFormData] = useState(() =>
+  const [formData, setFormData] = useState<ContactFormData>(() =>
     resolveInitialFormData(
-      { email: "", firstName: "", lastName: "" },
+      EMPTY_FORM_DATA,
       typeof window !== "undefined" ? window.location.search : "",
       typeof window !== "undefined" ? window.localStorage : null,
     ),
   );
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<ValidationErrors>({});
 
   useEffect(() => {
     document.title = config.siteName;
@@ -37,7 +64,7 @@ function App() {
       return;
     }
 
-    let favicon = document.querySelector("link[rel='icon']");
+    let favicon = document.querySelector<HTMLLinkElement>("link[rel='icon']");
     if (!favicon) {
       favicon = document.createElement("link");
       favicon.setAttribute("rel", "icon");
@@ -68,7 +95,7 @@ function App() {
       return;
     }
 
-    const existingLink = document.querySelector(
+    const existingLink = document.querySelector<HTMLLinkElement>(
       `link[data-dynamic-font="${fontUrl}"]`,
     );
     if (existingLink) {
@@ -95,8 +122,12 @@ function App() {
     persistFormPrefill(window.localStorage, formData);
   }, [formData]);
 
-  const onInputChange = (event) => {
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    if (!isFormFieldName(name)) {
+      return;
+    }
+
     setFormData((current) => ({ ...current, [name]: value }));
     setErrors((current) => {
       if (!current[name]) {
@@ -108,7 +139,7 @@ function App() {
     });
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     const nextErrors = validateFormInput(formData, copy.validation);
     setErrors(nextErrors);
 
@@ -126,7 +157,7 @@ function App() {
     "--header-text-font-size": config.headerTypography.fontSize,
     "--header-text-font-weight": config.headerTypography.fontWeight,
     "--header-text-font-style": config.headerTypography.fontStyle,
-  };
+  } as CSSProperties;
 
   return (
     <div className="app-shell" style={themeVariables}>
@@ -134,7 +165,11 @@ function App() {
       <div className="ambient-shape ambient-shape--bottom" aria-hidden="true" />
       <main className="landing-card">
         <header className="landing-header">
-          <img className="brand-logo" src={config.brandLogoUrl} alt={copy.form.logoAlt} />
+          <img
+            className="brand-logo"
+            src={config.brandLogoUrl}
+            alt={copy.form.logoAlt}
+          />
           <p className="site-name">{config.siteName}</p>
           <h1 className="header-text">{headerText}</h1>
         </header>
@@ -151,7 +186,7 @@ function App() {
           <input type="hidden" name="_captcha" value={config.formSubmitCaptcha} />
           <div className="honeypot-wrap" aria-hidden="true">
             <label htmlFor="honey-field">{copy.form.honeypotLabel}</label>
-            <input id="honey-field" type="text" name="_honey" tabIndex="-1" />
+            <input id="honey-field" type="text" name="_honey" tabIndex={-1} />
           </div>
 
           <label htmlFor="email">{copy.form.emailLabel}</label>
@@ -213,7 +248,6 @@ function App() {
 
           <button type="submit">{copy.form.submit}</button>
         </form>
-
       </main>
     </div>
   );

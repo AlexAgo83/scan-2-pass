@@ -1,7 +1,14 @@
+import type { ContactFormData } from "./form-types";
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PREFILL_STORAGE_KEY = "scan2pass_prefill_v1";
 
-function normalizeName(value) {
+export interface StorageLike {
+  getItem(key: string): string | null;
+  setItem(key: string, value: string): void;
+}
+
+function normalizeName(value: unknown): string {
   const nextValue = typeof value === "string" ? value.trim() : "";
   if (!nextValue || nextValue.length > 80) {
     return "";
@@ -9,12 +16,14 @@ function normalizeName(value) {
   return nextValue;
 }
 
-function normalizeEmail(value) {
+function normalizeEmail(value: unknown): string {
   const nextValue = typeof value === "string" ? value.trim().toLowerCase() : "";
   return EMAIL_REGEX.test(nextValue) ? nextValue : "";
 }
 
-function normalizePrefillInput(input) {
+function normalizePrefillInput(
+  input: Partial<ContactFormData> | null | undefined,
+): ContactFormData {
   return {
     email: normalizeEmail(input?.email),
     firstName: normalizeName(input?.firstName),
@@ -22,9 +31,9 @@ function normalizePrefillInput(input) {
   };
 }
 
-function parseQueryPrefill(search) {
+function parseQueryPrefill(search: string): ContactFormData {
   if (!search) {
-    return {};
+    return normalizePrefillInput(undefined);
   }
   const params = new URLSearchParams(search);
   return normalizePrefillInput({
@@ -42,23 +51,26 @@ function parseQueryPrefill(search) {
   });
 }
 
-function parseStoragePrefill(storage) {
+function parseStoragePrefill(storage: StorageLike | null): ContactFormData {
   if (!storage) {
-    return {};
+    return normalizePrefillInput(undefined);
   }
   try {
     const raw = storage.getItem(PREFILL_STORAGE_KEY);
     if (!raw) {
-      return {};
+      return normalizePrefillInput(undefined);
     }
-    return normalizePrefillInput(JSON.parse(raw));
+    return normalizePrefillInput(JSON.parse(raw) as Partial<ContactFormData>);
   } catch {
-    return {};
+    return normalizePrefillInput(undefined);
   }
 }
 
-function mergePrefill(baseData, ...sources) {
-  return sources.reduce(
+function mergePrefill(
+  baseData: ContactFormData,
+  ...sources: Array<Partial<ContactFormData>>
+): ContactFormData {
+  return sources.reduce<ContactFormData>(
     (accumulator, source) => ({
       email: accumulator.email || source.email || "",
       firstName: accumulator.firstName || source.firstName || "",
@@ -68,7 +80,11 @@ function mergePrefill(baseData, ...sources) {
   );
 }
 
-export function resolveInitialFormData(baseData, search, storage) {
+export function resolveInitialFormData(
+  baseData: ContactFormData,
+  search: string,
+  storage: StorageLike | null,
+): ContactFormData {
   const sanitizedBase = normalizePrefillInput(baseData);
   const queryPrefill = parseQueryPrefill(search);
   const storagePrefill = parseStoragePrefill(storage);
@@ -77,7 +93,10 @@ export function resolveInitialFormData(baseData, search, storage) {
   return mergePrefill(sanitizedBase, queryPrefill, storagePrefill);
 }
 
-export function persistFormPrefill(storage, formData) {
+export function persistFormPrefill(
+  storage: StorageLike | null,
+  formData: ContactFormData,
+): void {
   if (!storage) {
     return;
   }
@@ -90,4 +109,3 @@ export function persistFormPrefill(storage, formData) {
 }
 
 export { PREFILL_STORAGE_KEY };
-

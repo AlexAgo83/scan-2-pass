@@ -1,9 +1,36 @@
+import type { ValidationMessages } from "./validation";
+
 export const SUPPORTED_LOCALES = {
   EN: "en",
   FR: "fr",
-};
+} as const;
 
-const TRANSLATIONS = {
+export type SupportedLocale =
+  (typeof SUPPORTED_LOCALES)[keyof typeof SUPPORTED_LOCALES];
+
+interface NavigatorLike {
+  language?: string;
+  languages?: readonly string[];
+}
+
+interface FormTranslations {
+  logoAlt: string;
+  honeypotLabel: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  firstNameLabel: string;
+  firstNamePlaceholder: string;
+  lastNameLabel: string;
+  lastNamePlaceholder: string;
+  submit: string;
+}
+
+export interface Translations {
+  form: FormTranslations;
+  validation: ValidationMessages;
+}
+
+const TRANSLATIONS: Record<SupportedLocale, Translations> = {
   en: {
     form: {
       logoAlt: "Site logo",
@@ -44,23 +71,23 @@ const TRANSLATIONS = {
   },
 };
 
-function normalizeLocale(value) {
+function normalizeLocale(value: unknown): string {
   if (typeof value !== "string") {
     return "";
   }
   return value.trim().toLowerCase();
 }
 
-function isFrenchLocale(locale) {
+function isFrenchLocale(locale: string): boolean {
   return locale === SUPPORTED_LOCALES.FR || locale.startsWith("fr-");
 }
 
-export function resolveLocale(navigatorLike) {
+export function resolveLocale(navigatorLike?: NavigatorLike): SupportedLocale {
   if (!navigatorLike) {
     return SUPPORTED_LOCALES.EN;
   }
 
-  const localeCandidates = [];
+  const localeCandidates: string[] = [];
   if (Array.isArray(navigatorLike.languages)) {
     localeCandidates.push(...navigatorLike.languages);
   }
@@ -75,10 +102,9 @@ export function resolveLocale(navigatorLike) {
   return hasFrench ? SUPPORTED_LOCALES.FR : SUPPORTED_LOCALES.EN;
 }
 
-export function getTranslations(locale) {
+export function getTranslations(locale: string): Translations {
   if (locale === SUPPORTED_LOCALES.FR) {
     return TRANSLATIONS.fr;
   }
   return TRANSLATIONS.en;
 }
-

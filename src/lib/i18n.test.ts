@@ -32,4 +32,3 @@ describe("getTranslations", () => {
     expect(copy.form.submit).toBe("Continuer");
   });
 });
-

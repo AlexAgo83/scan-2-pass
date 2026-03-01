@@ -1,6 +1,6 @@
 # Scan 2 Pass
 
-Mobile-first static landing page (Vite + React) designed for QR access, FormSubmit data capture, and configurable redirect.
+Mobile-first static landing page (Vite + React + TypeScript) designed for QR access, FormSubmit data capture, and configurable redirect.
 
 [![License](https://img.shields.io/github/license/AlexAgo83/scan-2-pass)](LICENSE)
 [![CI](https://github.com/AlexAgo83/scan-2-pass/actions/workflows/ci.yml/badge.svg)](https://github.com/AlexAgo83/scan-2-pass/actions/workflows/ci.yml)
@@ -11,7 +11,7 @@ Mobile-first static landing page (Vite + React) designed for QR access, FormSubm
 
 ## Stack
 
-- Vite + React
+- Vite + React + TypeScript
 - Render static hosting
 - FormSubmit (no custom backend)
 
