@@ -1,8 +1,8 @@
 ## req_000_static_render_qr_landing_with_formsubmit_and_configurable_redirect - Static Render QR Landing with FormSubmit and Configurable Redirect
 > From version: 0.1.0
-> Status: Draft
-> Understanding: 99%
-> Confidence: 97%
+> Status: In Progress
+> Understanding: 100%
+> Confidence: 98%
 > Complexity: Medium
 > Theme: Lead Capture
 > Reminder: Update status/understanding/confidence and references when you edit this doc.
@@ -74,21 +74,21 @@
 - Document FormSubmit first-time activation requirement (email confirmation on first submission).
 
 # Config contract (initial target)
-- `PUBLIC_PROJECT_URL`: project URL shown in UI/docs (initial value: `https://github.com/AlexAgo83/scan-2-pass`).
-- `PUBLIC_SITE_NAME`: campaign/site display name used in the UI metadata/header.
-- `PUBLIC_BRAND_LOGO_URL`: logo source URL/path shown at top of page (initial default points to generated in-repo logo asset).
-- `PUBLIC_HEADER_TEXT`: main message displayed above the form.
-- `PUBLIC_REDIRECT_URL`: destination after successful form submission.
-- `PUBLIC_FORMSUBMIT_ENDPOINT`: FormSubmit endpoint (`https://formsubmit.co/<receiver>`).
-- `PUBLIC_FORMSUBMIT_RECEIVER`: receiving email address used to compose/validate endpoint setup (initial value: `a.agostini.fr@gmail.com`).
-- `PUBLIC_FORMSUBMIT_SUBJECT`: optional email subject for received submissions.
-- `PUBLIC_THEME_PRIMARY_COLOR`: primary brand color (buttons/accents).
-- `PUBLIC_THEME_BACKGROUND_COLOR`: page background color.
-- `PUBLIC_THEME_TEXT_COLOR`: default text color.
-- `PUBLIC_THEME_FONT_FAMILY`: primary font-family for page content.
-- `PUBLIC_THEME_HEADING_FONT_FAMILY`: optional heading font-family override.
-- `PUBLIC_THEME_FONT_URL`: optional Google Fonts CSS URL to load custom fonts.
-- Final variable prefix may be adapted to framework (`PUBLIC_` or `VITE_`) during implementation.
+- `VITE_PROJECT_URL`: project URL shown in UI/docs (initial value: `https://github.com/AlexAgo83/scan-2-pass`).
+- `VITE_SITE_NAME`: campaign/site display name used in the UI metadata/header.
+- `VITE_BRAND_LOGO_URL`: logo source URL/path shown at top of page (initial default points to generated in-repo logo asset).
+- `VITE_HEADER_TEXT`: main message displayed above the form.
+- `VITE_REDIRECT_URL`: destination after successful form submission.
+- `VITE_FORMSUBMIT_ENDPOINT`: FormSubmit endpoint (`https://formsubmit.co/<receiver>`).
+- `VITE_FORMSUBMIT_RECEIVER`: receiving email address used to compose/validate endpoint setup (initial value: `a.agostini.fr@gmail.com`).
+- `VITE_FORMSUBMIT_SUBJECT`: optional email subject for received submissions.
+- `VITE_FORMSUBMIT_CAPTCHA`: `true` or `false`.
+- `VITE_THEME_PRIMARY_COLOR`: primary brand color (buttons/accents).
+- `VITE_THEME_BACKGROUND_COLOR`: page background color.
+- `VITE_THEME_TEXT_COLOR`: default text color.
+- `VITE_THEME_FONT_FAMILY`: primary font-family for page content.
+- `VITE_THEME_HEADING_FONT_FAMILY`: optional heading font-family override.
+- `VITE_THEME_FONT_URL`: optional Google Fonts CSS URL to load custom fonts.
 
 # Acceptance criteria
 - AC1: The landing page is deployable as a static site on Render and loads correctly from a mobile QR scan flow.
@@ -139,6 +139,14 @@
 
 # Tasks
 - `logics/tasks/task_000_static_render_qr_landing_with_formsubmit_and_configurable_redirect.md`
+
+# Implementation snapshot
+- Implemented landing application: `src/App.jsx`, `src/App.css`, `src/index.css`.
+- Implemented env/config and validation layers: `src/lib/config.js`, `src/lib/validation.js`.
+- Added tests: `src/lib/config.test.js`, `src/lib/validation.test.js`.
+- Added setup/runtime docs and env contract: `README.md`, `.env.example`.
+- Added QR workflow and temp PNG artifact: `scripts/generate-qr.mjs`, `public/qr/scan-2-pass-temp.png`.
+- Added default logo and deployment baseline: `public/logo-default.svg`, `render.yaml`.
 
 # References
 - `logics/instructions.md`

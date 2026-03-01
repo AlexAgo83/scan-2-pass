@@ -1,9 +1,9 @@
 ## task_000_static_render_qr_landing_with_formsubmit_and_configurable_redirect - Static Render QR Landing with FormSubmit and Configurable Redirect
 > From version: 0.1.0
-> Status: Draft
-> Understanding: 97%
-> Confidence: 95%
-> Progress: 0%
+> Status: Done
+> Understanding: 100%
+> Confidence: 98%
+> Progress: 100%
 > Complexity: Medium
 > Theme: Lead Capture
 > Reminder: Update status/understanding/confidence/progress and dependencies/references when you edit this doc.
@@ -18,24 +18,24 @@ Execution focus for this task:
 - include generated default logo and QR workflow (temporary repo URL then final Render URL).
 
 # Plan
-- [ ] 1. Bootstrap Vite + React project skeleton and static hosting baseline (Render-compatible).
-- [ ] 2. Add runtime config layer and `.env.example` contract for:
+- [x] 1. Bootstrap Vite + React project skeleton and static hosting baseline (Render-compatible).
+- [x] 2. Add runtime config layer and `.env.example` contract for:
   - project/site metadata;
   - FormSubmit receiver/endpoint;
   - redirect URL;
   - theming (colors/fonts, optional Google Fonts URL).
-- [ ] 3. Implement mobile-first landing UI with:
+- [x] 3. Implement mobile-first landing UI with:
   - generated default logo;
   - configurable site name/header text;
   - accessible required fields (`email`, `firstName`, `lastName`).
-- [ ] 4. Implement client-side validation and user feedback for required fields.
-- [ ] 5. Integrate FormSubmit payload submission including hidden metadata fields.
-- [ ] 6. Wire same-tab redirect behavior via configured `_next` URL.
-- [ ] 7. Add QR generation workflow/documentation with PNG output in `public/qr/` targeting:
+- [x] 4. Implement client-side validation and user feedback for required fields.
+- [x] 5. Integrate FormSubmit payload submission including hidden metadata fields.
+- [x] 6. Wire same-tab redirect behavior via configured `_next` URL.
+- [x] 7. Add QR generation workflow/documentation with PNG output in `public/qr/` targeting:
   - temporary repo URL (`https://github.com/AlexAgo83/scan-2-pass`);
   - final Render URL once available.
-- [ ] 8. Update README/setup documentation, including explicit note that frontend env values are public.
-- [ ] FINAL: Update related Logics docs
+- [x] 8. Update README/setup documentation, including explicit note that frontend env values are public.
+- [x] FINAL: Update related Logics docs
 
 # AC Traceability
 - AC1, AC8 -> Steps 1 and 8. Proof: static build/deploy docs + no-backend architecture.
@@ -53,14 +53,23 @@ Execution focus for this task:
 - python3 logics/skills/logics-doc-linter/scripts/logics_lint.py
 
 # Definition of Done (DoD)
-- [ ] Scope implemented and acceptance criteria covered.
-- [ ] Validation commands executed and results captured.
-- [ ] Linked request/backlog/task docs updated.
-- [ ] Status is `Done` and progress is `100%`.
+- [x] Scope implemented and acceptance criteria covered.
+- [x] Validation commands executed and results captured.
+- [x] Linked request/backlog/task docs updated.
+- [x] Status is `Done` and progress is `100%`.
 
 # Report
 - Started from backlog item `item_000_static_render_qr_landing_with_formsubmit_and_configurable_redirect`.
-- Populate this section with:
-  - implemented files/modules;
-  - validation command outputs;
-  - AC-by-AC proof links.
+- Implemented files/modules:
+  - `src/App.jsx`, `src/App.css`, `src/index.css`
+  - `src/lib/config.js`, `src/lib/validation.js`
+  - `src/lib/config.test.js`, `src/lib/validation.test.js`
+  - `.env.example`, `README.md`
+  - `scripts/generate-qr.mjs`
+  - `public/logo-default.svg`, `public/qr/scan-2-pass-temp.png`
+  - `render.yaml`
+- Validation command results:
+  - `npm run -s lint`: passed
+  - `npm run -s build`: passed
+  - `npm run -s test`: passed
+  - `python3 logics/skills/logics-doc-linter/scripts/logics_lint.py`: passed

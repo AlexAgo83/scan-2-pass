@@ -1,9 +1,9 @@
 ## item_000_static_render_qr_landing_with_formsubmit_and_configurable_redirect - Static Render QR Landing with FormSubmit and Configurable Redirect
 > From version: 0.1.0
-> Status: Draft
-> Understanding: 99%
-> Confidence: 97%
-> Progress: 0%
+> Status: Done
+> Understanding: 100%
+> Confidence: 98%
+> Progress: 100%
 > Complexity: Medium
 > Theme: Lead Capture
 > Reminder: Update status/understanding/confidence/progress and linked task references when you edit this doc.
@@ -66,3 +66,16 @@
 # Notes
 - Derived from `logics/request/req_000_static_render_qr_landing_with_formsubmit_and_configurable_redirect.md`.
 - Delivery task: `logics/tasks/task_000_static_render_qr_landing_with_formsubmit_and_configurable_redirect.md`.
+- Implemented artifacts:
+  - `src/App.jsx`
+  - `src/lib/config.js`
+  - `src/lib/validation.js`
+  - `.env.example`
+  - `scripts/generate-qr.mjs`
+  - `public/logo-default.svg`
+  - `public/qr/scan-2-pass-temp.png`
+  - `render.yaml`
+- Validation summary:
+  - `npm run -s lint` passed.
+  - `npm run -s build` passed.
+  - `npm run -s test` passed.

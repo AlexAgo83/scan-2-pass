@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+input,
+button {
+  font: inherit;
+}
