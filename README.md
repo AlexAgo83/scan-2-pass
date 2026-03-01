@@ -98,3 +98,11 @@ Users can always edit prefilled values before submission.
 - `npm run lint`
 - `npm run build`
 - `npm run test`
+
+## Contributing
+
+Contribution guidelines are available in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
