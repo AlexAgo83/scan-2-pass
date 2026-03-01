@@ -10,6 +10,9 @@ describe("resolveAppConfig", () => {
     expect(config.formSubmitEndpoint).toBe(
       "https://formsubmit.co/a.agostini.fr@gmail.com",
     );
+    expect(config.headerTypography.fontSize).toBe("clamp(1.35rem, 4vw, 1.8rem)");
+    expect(config.headerTypography.fontWeight).toBe("700");
+    expect(config.headerTypography.fontStyle).toBe("normal");
   });
 
   test("builds FormSubmit endpoint from receiver", () => {
@@ -30,5 +33,32 @@ describe("resolveAppConfig", () => {
 
     expect(config.theme.primaryColor).toBe("#f97316");
   });
-});
 
+  test("applies valid header typography values from env", () => {
+    const config = resolveAppConfig({
+      VITE_HEADER_TEXT_FONT_SIZE: "44px",
+      VITE_HEADER_TEXT_FONT_WEIGHT: "800",
+      VITE_HEADER_TEXT_FONT_STYLE: "italic",
+    });
+
+    expect(config.headerTypography).toEqual({
+      fontSize: "44px",
+      fontWeight: "800",
+      fontStyle: "italic",
+    });
+  });
+
+  test("uses safe fallback for invalid header typography values", () => {
+    const config = resolveAppConfig({
+      VITE_HEADER_TEXT_FONT_SIZE: "5",
+      VITE_HEADER_TEXT_FONT_WEIGHT: "1200",
+      VITE_HEADER_TEXT_FONT_STYLE: "strange",
+    });
+
+    expect(config.headerTypography).toEqual({
+      fontSize: "clamp(1.35rem, 4vw, 1.8rem)",
+      fontWeight: "700",
+      fontStyle: "normal",
+    });
+  });
+});

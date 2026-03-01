@@ -25,6 +25,9 @@ All frontend env variables are public at runtime. Do not place secrets in `.env`
 - `VITE_SITE_NAME`: site name shown on page.
 - `VITE_BRAND_LOGO_URL`: logo path or URL.
 - `VITE_HEADER_TEXT`: header text above the form.
+- `VITE_HEADER_TEXT_FONT_SIZE`: header font size (`px`, `rem`, `em`, `vw`, or fallback default).
+- `VITE_HEADER_TEXT_FONT_WEIGHT`: header font weight (`normal`, `bold`, or numeric `400-900`).
+- `VITE_HEADER_TEXT_FONT_STYLE`: header font style (`normal`, `italic`, `oblique`).
 - `VITE_REDIRECT_URL`: redirect URL after successful form submit.
 - `VITE_FORMSUBMIT_RECEIVER`: receiver email (default `a.agostini.fr@gmail.com`).
 - `VITE_FORMSUBMIT_ENDPOINT`: optional direct FormSubmit endpoint (`https://formsubmit.co/<email>`). If empty, endpoint is composed from receiver.
@@ -36,6 +39,8 @@ All frontend env variables are public at runtime. Do not place secrets in `.env`
 - `VITE_THEME_FONT_FAMILY`: body font stack.
 - `VITE_THEME_HEADING_FONT_FAMILY`: heading font stack.
 - `VITE_THEME_FONT_URL`: optional Google Fonts stylesheet URL.
+
+For hex values in `.env`, wrap them in quotes (example: `VITE_THEME_PRIMARY_COLOR=\"#5a6bff\"`) so `#` is not treated as a comment.
 
 ## FormSubmit note
 
@@ -53,12 +58,23 @@ Generate custom QR:
 
 Generated QR files are saved as PNG under `public/qr/`.
 
+## Prefill strategy
+
+Field prefill priority is deterministic:
+
+1. URL query params (`email`, `firstName`, `lastName`; snake_case aliases supported).
+2. Last valid local storage values (`scan2pass_prefill_v1`).
+3. Browser-native autofill (`autocomplete`) and manual input.
+
+Users can always edit prefilled values before submission.
+
 ## Render deployment
 
 `render.yaml` is included for static hosting:
 
 - build command: `npm ci && npm run build`
 - publish path: `dist`
+- deployment blueprint and checklist: [`docs/render-blueprint.md`](docs/render-blueprint.md)
 
 ## Quality checks
 

@@ -12,6 +12,11 @@ const DEFAULT_CONFIG = {
   formSubmitEndpoint: `https://formsubmit.co/${DEFAULT_RECEIVER}`,
   formSubmitSubject: "Scan 2 Pass - New form submission",
   formSubmitCaptcha: "true",
+  headerTypography: {
+    fontSize: "clamp(1.35rem, 4vw, 1.8rem)",
+    fontWeight: "700",
+    fontStyle: "normal",
+  },
   theme: {
     primaryColor: "#f97316",
     backgroundColor: "#fff8f1",
@@ -29,6 +34,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const COLOR_REGEX =
   /^(#[0-9a-fA-F]{3,8}|rgb(a)?\(\s*[\d.%\s,]+\)|hsl(a)?\(\s*[\d.%\s,]+\)|[a-zA-Z]{3,20})$/;
 const FONT_FAMILY_REGEX = /^[A-Za-z0-9,\-_'"\s]+$/;
+const FONT_SIZE_REGEX = /^(\d+(\.\d+)?)(px|rem|em|vw)$/;
 
 function cleanText(value, fallback) {
   const nextValue = typeof value === "string" ? value.trim() : "";
@@ -63,6 +69,54 @@ function cleanFontFamily(value, fallback) {
     return fallback;
   }
   return FONT_FAMILY_REGEX.test(nextValue) ? nextValue : fallback;
+}
+
+function cleanHeaderFontSize(value, fallback) {
+  const nextValue = cleanText(value, "");
+  if (!nextValue) {
+    return fallback;
+  }
+
+  if (FONT_SIZE_REGEX.test(nextValue)) {
+    return nextValue;
+  }
+
+  const asNumber = Number(nextValue);
+  if (Number.isFinite(asNumber) && asNumber >= 20 && asNumber <= 72) {
+    return `${asNumber}px`;
+  }
+
+  return fallback;
+}
+
+function cleanHeaderFontWeight(value, fallback) {
+  const nextValue = cleanText(value, "").toLowerCase();
+  if (!nextValue) {
+    return fallback;
+  }
+
+  if (nextValue === "normal" || nextValue === "bold") {
+    return nextValue;
+  }
+
+  const parsed = Number(nextValue);
+  if (Number.isFinite(parsed) && parsed >= 400 && parsed <= 900) {
+    return String(parsed);
+  }
+
+  return fallback;
+}
+
+function cleanHeaderFontStyle(value, fallback) {
+  const nextValue = cleanText(value, "").toLowerCase();
+  if (
+    nextValue === "normal" ||
+    nextValue === "italic" ||
+    nextValue === "oblique"
+  ) {
+    return nextValue;
+  }
+  return fallback;
 }
 
 function cleanFontUrl(value) {
@@ -148,6 +202,18 @@ export function resolveAppConfig(env = {}) {
     env.VITE_FORMSUBMIT_CAPTCHA,
     DEFAULT_CONFIG.formSubmitCaptcha,
   );
+  const headerTextFontSize = cleanHeaderFontSize(
+    env.VITE_HEADER_TEXT_FONT_SIZE,
+    DEFAULT_CONFIG.headerTypography.fontSize,
+  );
+  const headerTextFontWeight = cleanHeaderFontWeight(
+    env.VITE_HEADER_TEXT_FONT_WEIGHT,
+    DEFAULT_CONFIG.headerTypography.fontWeight,
+  );
+  const headerTextFontStyle = cleanHeaderFontStyle(
+    env.VITE_HEADER_TEXT_FONT_STYLE,
+    DEFAULT_CONFIG.headerTypography.fontStyle,
+  );
   const primaryColor = cleanColor(
     env.VITE_THEME_PRIMARY_COLOR,
     DEFAULT_CONFIG.theme.primaryColor,
@@ -181,6 +247,11 @@ export function resolveAppConfig(env = {}) {
     formSubmitEndpoint,
     formSubmitSubject,
     formSubmitCaptcha,
+    headerTypography: {
+      fontSize: headerTextFontSize,
+      fontWeight: headerTextFontWeight,
+      fontStyle: headerTextFontStyle,
+    },
     theme: {
       primaryColor,
       backgroundColor,
@@ -191,4 +262,3 @@ export function resolveAppConfig(env = {}) {
     },
   };
 }
-

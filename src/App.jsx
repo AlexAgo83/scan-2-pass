@@ -1,15 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import { resolveAppConfig } from "./lib/config";
+import { persistFormPrefill, resolveInitialFormData } from "./lib/prefill";
 import { hasValidationErrors, validateFormInput } from "./lib/validation";
 import "./App.css";
 
 function App() {
   const config = useMemo(() => resolveAppConfig(import.meta.env), []);
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-  });
+  const [formData, setFormData] = useState(() =>
+    resolveInitialFormData(
+      { email: "", firstName: "", lastName: "" },
+      typeof window !== "undefined" ? window.location.search : "",
+      typeof window !== "undefined" ? window.localStorage : null,
+    ),
+  );
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -42,6 +45,13 @@ function App() {
     };
   }, [config.theme.fontUrl]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    persistFormPrefill(window.localStorage, formData);
+  }, [formData]);
+
   const onInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((current) => ({ ...current, [name]: value }));
@@ -70,6 +80,9 @@ function App() {
     "--theme-text": config.theme.textColor,
     "--theme-font": config.theme.fontFamily,
     "--theme-heading-font": config.theme.headingFontFamily,
+    "--header-text-font-size": config.headerTypography.fontSize,
+    "--header-text-font-weight": config.headerTypography.fontWeight,
+    "--header-text-font-style": config.headerTypography.fontStyle,
   };
 
   return (
