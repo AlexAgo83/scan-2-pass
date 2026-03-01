@@ -18,6 +18,8 @@ jobs:
   checks:
     name: Lint, Test, Build
     runs-on: ubuntu-latest
+    env:
+      VITE_FORMSUBMIT_RECEIVER: ci@example.com
 
     steps:
       - name: Checkout
