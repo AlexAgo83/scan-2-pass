@@ -96,8 +96,20 @@ Users can always edit prefilled values before submission.
 ## Quality checks
 
 - `npm run lint`
+- `npm run typecheck`
 - `npm run build`
-- `npm run test`
+- `npm run test` (unit + UI)
+- `npm run test:ci` (unit + UI + coverage report)
+- `npm run test:e2e` (Playwright smoke tests)
+- `npm run ci:local` (same sequence as GitHub CI: lint + test + build)
+
+Before first E2E run on a new machine, install browsers once:
+
+- `npx playwright install chromium`
+
+To replay CI from a clean install:
+
+- `npm ci && npm run ci:local`
 
 ## Contributing
 
