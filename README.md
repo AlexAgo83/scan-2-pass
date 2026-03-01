@@ -2,6 +2,12 @@
 
 Mobile-first static landing page (Vite + React) designed for QR access, FormSubmit data capture, and configurable redirect.
 
+[![License](https://img.shields.io/github/license/AlexAgo83/scan-2-pass)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/live%20demo-Render-46E3B7?logo=render&logoColor=white)](https://scan-2-pass.onrender.com)
+![Version](https://img.shields.io/badge/version-v0.1.0-4C8BF5)
+![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF?logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=black)
+
 ## Stack
 
 - Vite + React
