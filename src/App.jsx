@@ -27,6 +27,30 @@ function App() {
   }, [config.siteName]);
 
   useEffect(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
+
+    let favicon = document.querySelector("link[rel='icon']");
+    if (!favicon) {
+      favicon = document.createElement("link");
+      favicon.setAttribute("rel", "icon");
+      document.head.appendChild(favicon);
+    }
+
+    favicon.setAttribute("href", config.faviconUrl);
+
+    const isSvg =
+      config.faviconUrl.endsWith(".svg") ||
+      config.faviconUrl.startsWith("data:image/svg+xml");
+    if (isSvg) {
+      favicon.setAttribute("type", "image/svg+xml");
+    } else {
+      favicon.removeAttribute("type");
+    }
+  }, [config.faviconUrl]);
+
+  useEffect(() => {
     if (typeof document !== "undefined") {
       document.documentElement.lang = locale;
     }

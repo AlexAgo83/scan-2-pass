@@ -24,6 +24,7 @@ All frontend env variables are public at runtime. Do not place secrets in `.env`
 - `VITE_PROJECT_URL`: project reference URL.
 - `VITE_SITE_NAME`: site name shown on page.
 - `VITE_BRAND_LOGO_URL`: logo path or URL.
+- `VITE_FAVICON_URL`: favicon path or URL (`/favicon.svg` or `https://...`).
 - `VITE_HEADER_TEXT`: header text above the form.
 - `VITE_HEADER_TEXT_FONT_SIZE`: header font size (`px`, `rem`, `em`, `vw`, or fallback default).
 - `VITE_HEADER_TEXT_FONT_WEIGHT`: header font weight (`normal`, `bold`, or numeric `400-900`).

@@ -7,6 +7,7 @@ describe("resolveAppConfig", () => {
 
     expect(config.projectUrl).toBe("https://github.com/AlexAgo83/scan-2-pass");
     expect(config.siteName).toBe("Scan 2 Pass");
+    expect(config.faviconUrl).toBe("/logo-default.svg");
     expect(config.formSubmitEndpoint).toBe(
       "https://formsubmit.co/a.agostini.fr@gmail.com",
     );
@@ -32,6 +33,36 @@ describe("resolveAppConfig", () => {
     });
 
     expect(config.theme.primaryColor).toBe("#f97316");
+  });
+
+  test("accepts root-relative and absolute favicon URLs", () => {
+    const relativeConfig = resolveAppConfig({
+      VITE_FAVICON_URL: "/brand/favicon.png",
+    });
+    const absoluteConfig = resolveAppConfig({
+      VITE_FAVICON_URL: "https://circle-mobility.com/logo512.png",
+    });
+
+    expect(relativeConfig.faviconUrl).toBe("/brand/favicon.png");
+    expect(absoluteConfig.faviconUrl).toBe(
+      "https://circle-mobility.com/logo512.png",
+    );
+  });
+
+  test("falls back to brand logo when favicon is not set", () => {
+    const config = resolveAppConfig({
+      VITE_BRAND_LOGO_URL: "https://circle-mobility.com/logo512.png",
+    });
+
+    expect(config.faviconUrl).toBe("https://circle-mobility.com/logo512.png");
+  });
+
+  test("falls back to default favicon when value is invalid", () => {
+    const config = resolveAppConfig({
+      VITE_FAVICON_URL: "javascript:alert(1)",
+    });
+
+    expect(config.faviconUrl).toBe("/logo-default.svg");
   });
 
   test("applies valid header typography values from env", () => {

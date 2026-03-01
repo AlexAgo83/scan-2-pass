@@ -5,6 +5,7 @@ const DEFAULT_CONFIG = {
   projectUrl: DEFAULT_PROJECT_URL,
   siteName: "Scan 2 Pass",
   brandLogoUrl: "/logo-default.svg",
+  faviconUrl: "/logo-default.svg",
   headerText:
     "Fill in your details to continue to the private destination content.",
   redirectUrl: DEFAULT_PROJECT_URL,
@@ -45,6 +46,27 @@ function cleanUrl(value, fallback) {
   const nextValue = cleanText(value, "");
   if (!nextValue) {
     return fallback;
+  }
+
+  try {
+    const parsedUrl = new URL(nextValue);
+    if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+      return fallback;
+    }
+    return parsedUrl.toString();
+  } catch {
+    return fallback;
+  }
+}
+
+function cleanAssetUrl(value, fallback) {
+  const nextValue = cleanText(value, "");
+  if (!nextValue) {
+    return fallback;
+  }
+
+  if (nextValue.startsWith("/")) {
+    return nextValue;
   }
 
   try {
@@ -181,6 +203,10 @@ export function resolveAppConfig(env = {}) {
     env.VITE_BRAND_LOGO_URL,
     DEFAULT_CONFIG.brandLogoUrl,
   );
+  const faviconUrl = cleanAssetUrl(
+    env.VITE_FAVICON_URL,
+    brandLogoUrl || DEFAULT_CONFIG.faviconUrl,
+  );
   const headerText = cleanText(
     env.VITE_HEADER_TEXT,
     DEFAULT_CONFIG.headerText,
@@ -241,6 +267,7 @@ export function resolveAppConfig(env = {}) {
     projectUrl,
     siteName,
     brandLogoUrl,
+    faviconUrl,
     headerText,
     redirectUrl,
     formSubmitReceiver,
