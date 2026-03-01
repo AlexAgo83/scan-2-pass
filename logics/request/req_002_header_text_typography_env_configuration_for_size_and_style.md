@@ -1,8 +1,8 @@
 ## req_002_header_text_typography_env_configuration_for_size_and_style - Header text typography env configuration for size and style
 > From version: 0.1.0
 > Status: Draft
-> Understanding: 96%
-> Confidence: 95%
+> Understanding: 97%
+> Confidence: 96%
 > Complexity: Low
 > Theme: UI
 > Reminder: Update status/understanding/confidence and references when you edit this doc.
@@ -65,6 +65,7 @@
 - To create from this request:
   - `item_003_header_text_typography_env_contract_and_runtime_validation.md`
 
+- `logics/backlog/item_002_header_text_typography_env_configuration_for_size_and_style.md`
 # References
 - `.env.example`
 - `src/lib/config.js`

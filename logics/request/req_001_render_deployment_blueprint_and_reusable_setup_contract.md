@@ -1,8 +1,8 @@
 ## req_001_render_deployment_blueprint_and_reusable_setup_contract - Render deployment blueprint and reusable setup contract
 > From version: 0.1.0
 > Status: Draft
-> Understanding: 95%
-> Confidence: 94%
+> Understanding: 96%
+> Confidence: 95%
 > Complexity: Low
 > Theme: Platform
 > Reminder: Update status/understanding/confidence and references when you edit this doc.
@@ -75,6 +75,7 @@
   - `item_001_render_blueprint_specification_and_env_matrix.md`
   - `item_002_render_deploy_checklist_and_operational_runbook.md`
 
+- `logics/backlog/item_001_render_deployment_blueprint_and_reusable_setup_contract.md`
 # References
 - `render.yaml`
 - `.env.example`

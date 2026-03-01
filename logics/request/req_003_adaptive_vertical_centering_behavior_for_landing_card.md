@@ -1,8 +1,8 @@
 ## req_003_adaptive_vertical_centering_behavior_for_landing_card - Adaptive vertical centering behavior for landing card
 > From version: 0.1.0
 > Status: Draft
-> Understanding: 97%
-> Confidence: 96%
+> Understanding: 98%
+> Confidence: 97%
 > Complexity: Low
 > Theme: UI
 > Reminder: Update status/understanding/confidence and references when you edit this doc.
@@ -61,6 +61,7 @@
 - To create from this request:
   - `item_004_adaptive_vertical_layout_contract_for_landing_card.md`
 
+- `logics/backlog/item_003_adaptive_vertical_centering_behavior_for_landing_card.md`
 # References
 - `src/App.css`
 - `src/App.jsx`
