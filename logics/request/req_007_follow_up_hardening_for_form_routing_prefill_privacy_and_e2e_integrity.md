@@ -1,8 +1,8 @@
 ## req_007_follow_up_hardening_for_form_routing_prefill_privacy_and_e2e_integrity - Follow-up hardening for form routing, prefill privacy, and E2E integrity
 > From version: 1.0.1
-> Status: In Progress
-> Understanding: 98%
-> Confidence: 96%
+> Status: Done
+> Understanding: 100%
+> Confidence: 97%
 > Complexity: Medium
 > Theme: Quality
 > Reminder: Update status/understanding/confidence and references when you edit this doc.
@@ -84,7 +84,24 @@
 - `logics/tasks/task_004_super_orchestration_delivery_execution_for_item_011_to_item_015_with_validation_gates.md`
 
 # Implementation snapshot
-- none (request stage)
+- `src/lib/config.ts`
+- `src/lib/config.test.ts`
+- `src/lib/prefill.ts`
+- `src/lib/prefill.test.ts`
+- `src/hooks/useContactForm.ts`
+- `src/App.tsx`
+- `src/App.css`
+- `src/lib/i18n.ts`
+- `src/tests/app.ui.test.tsx`
+- `playwright.config.ts`
+- `README.md`
+- `CONTRIBUTING.md`
+- `logics/backlog/item_011_formsubmit_receiver_guardrails_and_fail_fast_behavior.md`
+- `logics/backlog/item_012_prefill_expiration_purge_and_retention_enforcement.md`
+- `logics/backlog/item_013_prefill_precedence_contract_alignment_and_tests.md`
+- `logics/backlog/item_014_playwright_server_isolation_for_ci_reliability.md`
+- `logics/backlog/item_015_submit_state_recovery_on_interrupted_navigation.md`
+- `logics/tasks/task_004_super_orchestration_delivery_execution_for_item_011_to_item_015_with_validation_gates.md`
 
 # References
 - `src/lib/config.ts`

@@ -72,6 +72,14 @@ function parseQueryPrefill(search: string): ContactFormData {
   });
 }
 
+function removePersistedPrefill(storage: StorageLike): void {
+  if (typeof storage.removeItem === "function") {
+    storage.removeItem(PREFILL_STORAGE_KEY);
+    return;
+  }
+  storage.setItem(PREFILL_STORAGE_KEY, "");
+}
+
 function parseStoragePrefill(storage: StorageLike | null): ContactFormData {
   if (!storage) {
     return normalizePrefillInput(undefined);
@@ -84,28 +92,49 @@ function parseStoragePrefill(storage: StorageLike | null): ContactFormData {
     const parsed = JSON.parse(raw) as unknown;
     if (isPersistedPrefillPayload(parsed)) {
       if (Date.now() - parsed.savedAt > PREFILL_TTL_MS) {
+        removePersistedPrefill(storage);
         return normalizePrefillInput(undefined);
       }
       return normalizePrefillInput(parsed.values as Partial<ContactFormData>);
     }
     return normalizePrefillInput(parsed as Partial<ContactFormData>);
   } catch {
+    removePersistedPrefill(storage);
     return normalizePrefillInput(undefined);
   }
 }
 
+function pickFirstNonEmpty(...values: Array<string | undefined>): string {
+  for (const value of values) {
+    if (value) {
+      return value;
+    }
+  }
+  return "";
+}
+
 function mergePrefill(
+  queryPrefill: ContactFormData,
+  storagePrefill: ContactFormData,
   baseData: ContactFormData,
-  ...sources: Array<Partial<ContactFormData>>
 ): ContactFormData {
-  return sources.reduce<ContactFormData>(
-    (accumulator, source) => ({
-      email: accumulator.email || source.email || "",
-      firstName: accumulator.firstName || source.firstName || "",
-      lastName: accumulator.lastName || source.lastName || "",
-    }),
-    { ...baseData },
-  );
+  return {
+    email: pickFirstNonEmpty(
+      queryPrefill.email,
+      storagePrefill.email,
+      baseData.email,
+    ),
+    firstName: pickFirstNonEmpty(
+      queryPrefill.firstName,
+      storagePrefill.firstName,
+      baseData.firstName,
+    ),
+    lastName: pickFirstNonEmpty(
+      queryPrefill.lastName,
+      storagePrefill.lastName,
+      baseData.lastName,
+    ),
+  };
 }
 
 export function resolveInitialFormData(
@@ -118,7 +147,7 @@ export function resolveInitialFormData(
   const storagePrefill = parseStoragePrefill(storage);
 
   // Priority: explicit query params, then stored recent values, then base defaults.
-  return mergePrefill(sanitizedBase, queryPrefill, storagePrefill);
+  return mergePrefill(queryPrefill, storagePrefill, sanitizedBase);
 }
 
 export function persistFormPrefill(
@@ -144,11 +173,7 @@ export function clearFormPrefill(storage: StorageLike | null): void {
     return;
   }
   try {
-    if (typeof storage.removeItem === "function") {
-      storage.removeItem(PREFILL_STORAGE_KEY);
-      return;
-    }
-    storage.setItem(PREFILL_STORAGE_KEY, "");
+    removePersistedPrefill(storage);
   } catch {
     // Ignore storage failures (private mode or quota issues).
   }

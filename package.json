@@ -12,7 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ci": "vitest run --coverage",
-    "test:e2e": "playwright test --reporter=line",
+    "test:e2e": "env -u NO_COLOR playwright test --reporter=line",
     "ci:local": "npm run lint && npm run typecheck && npm run test:ci && npm run build && npm run test:e2e",
     "qr:generate": "node scripts/generate-qr.mjs",
     "qr:temp": "node scripts/generate-qr.mjs --url https://github.com/AlexAgo83/scan-2-pass --output public/qr/scan-2-pass-temp.png"

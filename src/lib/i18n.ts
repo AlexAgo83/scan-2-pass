@@ -24,6 +24,7 @@ interface FormTranslations {
   lastNamePlaceholder: string;
   submit: string;
   submitting: string;
+  submitRecovery: string;
 }
 
 export interface Translations {
@@ -44,6 +45,8 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       lastNamePlaceholder: "Doe",
       submit: "Continue",
       submitting: "Submitting...",
+      submitRecovery:
+        "Submission took longer than expected. Please review your details and try again.",
     },
     validation: {
       firstNameRequired: "First name is required.",
@@ -64,6 +67,8 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       lastNamePlaceholder: "Dupont",
       submit: "Continuer",
       submitting: "Envoi en cours...",
+      submitRecovery:
+        "L'envoi prend plus de temps que prevu. Verifiez vos informations puis reessayez.",
     },
     validation: {
       firstNameRequired: "Le prénom est requis.",

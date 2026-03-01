@@ -1,9 +1,9 @@
 ## item_014_playwright_server_isolation_for_ci_reliability - Playwright server isolation for CI reliability
 > From version: 1.0.1
-> Status: In Progress
-> Understanding: 98%
-> Confidence: 95%
-> Progress: 0%
+> Status: Done
+> Understanding: 100%
+> Confidence: 97%
+> Progress: 100%
 > Complexity: Medium
 > Theme: Engineering Quality
 > Reminder: Update status/understanding/confidence/progress and linked task references when you edit this doc.
@@ -41,8 +41,7 @@
 # Notes
 - Derived from `logics/request/req_007_follow_up_hardening_for_form_routing_prefill_privacy_and_e2e_integrity.md`.
 - Delivery task: `logics/tasks/task_004_super_orchestration_delivery_execution_for_item_011_to_item_015_with_validation_gates.md`.
-- Planned artifacts:
+- Implemented artifacts:
   - `playwright.config.ts`
-  - `.github/workflows/ci.yml`
   - `README.md`
   - `CONTRIBUTING.md`

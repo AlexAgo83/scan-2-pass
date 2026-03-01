@@ -27,6 +27,7 @@ const EMPTY_FORM_DATA: ContactFormData = {
 
 const FORM_FIELD_NAMES = ["email", "firstName", "lastName"] as const;
 type FormFieldName = (typeof FORM_FIELD_NAMES)[number];
+const SUBMIT_RECOVERY_TIMEOUT_MS = 12_000;
 
 function isFormFieldName(value: string): value is FormFieldName {
   return FORM_FIELD_NAMES.includes(value as FormFieldName);
@@ -36,12 +37,14 @@ interface UseContactFormResult {
   formData: ContactFormData;
   errors: ValidationErrors;
   isSubmitting: boolean;
+  submitRecoveryMessage: string;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
 export function useContactForm(
   validationMessages: ValidationMessages,
+  submitRecoveryText: string,
 ): UseContactFormResult {
   const [formData, setFormData] = useState<ContactFormData>(() =>
     resolveInitialFormData(
@@ -52,7 +55,19 @@ export function useContactForm(
   );
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitRecoveryMessage, setSubmitRecoveryMessage] = useState("");
   const submitInFlightRef = useRef(false);
+  const submitRecoveryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
+
+  const clearSubmitRecoveryTimer = useCallback(() => {
+    if (submitRecoveryTimerRef.current === null) {
+      return;
+    }
+    clearTimeout(submitRecoveryTimerRef.current);
+    submitRecoveryTimerRef.current = null;
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -61,6 +76,10 @@ export function useContactForm(
     persistFormPrefill(window.localStorage, formData);
   }, [formData]);
 
+  useEffect(() => () => {
+    clearSubmitRecoveryTimer();
+  }, [clearSubmitRecoveryTimer]);
+
   const onInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     if (!isFormFieldName(name)) {
@@ -68,6 +87,7 @@ export function useContactForm(
     }
 
     setFormData((current) => ({ ...current, [name]: value }));
+    setSubmitRecoveryMessage("");
     setErrors((current) => {
       if (!current[name]) {
         return current;
@@ -95,18 +115,29 @@ export function useContactForm(
 
       submitInFlightRef.current = true;
       setIsSubmitting(true);
+      setSubmitRecoveryMessage("");
+      clearSubmitRecoveryTimer();
       if (typeof window !== "undefined") {
+        submitRecoveryTimerRef.current = window.setTimeout(() => {
+          submitRecoveryTimerRef.current = null;
+          submitInFlightRef.current = false;
+          setIsSubmitting(false);
+          setSubmitRecoveryMessage(submitRecoveryText);
+        }, SUBMIT_RECOVERY_TIMEOUT_MS);
         clearFormPrefill(window.localStorage);
       }
     },
-    [formData, validationMessages],
+    [clearSubmitRecoveryTimer, formData, submitRecoveryText, validationMessages],
   );
 
   return {
     formData,
     errors,
     isSubmitting,
+    submitRecoveryMessage,
     onInputChange,
     onSubmit,
   };
 }
+
+export { SUBMIT_RECOVERY_TIMEOUT_MS };

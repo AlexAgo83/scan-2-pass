@@ -36,9 +36,9 @@ describe("resolveInitialFormData", () => {
 
     const initial = resolveInitialFormData(
       {
-        email: "",
-        firstName: "",
-        lastName: "",
+        email: "base@example.com",
+        firstName: "BaseFirst",
+        lastName: "BaseLast",
       },
       "?email=query@example.com&firstName=QueryFirst",
       storage,
@@ -47,6 +47,32 @@ describe("resolveInitialFormData", () => {
     expect(initial.email).toBe("query@example.com");
     expect(initial.firstName).toBe("QueryFirst");
     expect(initial.lastName).toBe("StorageLast");
+  });
+
+  test("keeps documented precedence with non-empty competing sources", () => {
+    const storage = makeStorage(
+      JSON.stringify({
+        email: "storage@example.com",
+        firstName: "StorageFirst",
+        lastName: "StorageLast",
+      }),
+    );
+
+    const initial = resolveInitialFormData(
+      {
+        email: "base@example.com",
+        firstName: "BaseFirst",
+        lastName: "BaseLast",
+      },
+      "?email=query@example.com&lastName=QueryLast",
+      storage,
+    );
+
+    expect(initial).toEqual({
+      email: "query@example.com",
+      firstName: "StorageFirst",
+      lastName: "QueryLast",
+    });
   });
 
   test("ignores invalid prefill values", () => {
@@ -89,6 +115,29 @@ describe("resolveInitialFormData", () => {
     );
 
     expect(initial).toEqual({ email: "", firstName: "", lastName: "" });
+    nowSpy.mockRestore();
+  });
+
+  test("purges expired storage payload when detected", () => {
+    const nowSpy = vi.spyOn(Date, "now").mockReturnValue(2_000_000);
+    const removeItem = vi.fn();
+    const storage: StorageLike = {
+      getItem: () =>
+        JSON.stringify({
+          savedAt: 2_000_000 - PREFILL_TTL_MS - 1,
+          values: {
+            email: "old@example.com",
+            firstName: "Old",
+            lastName: "Data",
+          },
+        }),
+      setItem: vi.fn(),
+      removeItem,
+    };
+
+    resolveInitialFormData({ email: "", firstName: "", lastName: "" }, "", storage);
+
+    expect(removeItem).toHaveBeenCalledWith(PREFILL_STORAGE_KEY);
     nowSpy.mockRestore();
   });
 

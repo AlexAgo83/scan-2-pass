@@ -42,7 +42,7 @@ All frontend env variables are public at runtime. Do not place secrets in `.env`
 - `VITE_HEADER_TEXT_FONT_WEIGHT`: header font weight (`normal`, `bold`, or numeric `400-900`).
 - `VITE_HEADER_TEXT_FONT_STYLE`: header font style (`normal`, `italic`, `oblique`).
 - `VITE_REDIRECT_URL`: redirect URL after successful form submit.
-- `VITE_FORMSUBMIT_RECEIVER`: receiver email (default `a.agostini.fr@gmail.com`).
+- `VITE_FORMSUBMIT_RECEIVER`: receiver email. Required and validated in non-development runtimes.
 - `VITE_FORMSUBMIT_ENDPOINT`: optional direct FormSubmit endpoint (`https://formsubmit.co/<email>`). If empty, endpoint is composed from receiver.
 - `VITE_FORMSUBMIT_SUBJECT`: optional subject for submission email.
 - `VITE_FORMSUBMIT_CAPTCHA`: `true` or `false`.
@@ -58,6 +58,7 @@ For hex values in `.env`, wrap them in quotes (example: `VITE_THEME_PRIMARY_COLO
 ## FormSubmit note
 
 On first live submission, FormSubmit sends an activation email to the receiver address. Confirm it once to enable delivery.
+For production/staging deployments, always set a valid `VITE_FORMSUBMIT_RECEIVER` value explicitly.
 
 ## QR generation
 
@@ -80,7 +81,12 @@ Field prefill priority is deterministic:
 3. Browser-native autofill (`autocomplete`) and manual input.
 
 Users can always edit prefilled values before submission.
-Stored prefill values use a 24-hour retention window and are cleared when a valid form submission is triggered.
+Stored prefill values use a 24-hour retention window, expired entries are purged when read, and values are cleared when a valid form submission is triggered.
+
+## Submit resilience
+
+- During valid submit, the CTA is disabled and a pending status is shown.
+- If navigation does not complete after the submit timeout window, submit state is automatically restored and the user can retry.
 
 ## Language behavior
 
@@ -114,6 +120,11 @@ Before first E2E run on a new machine, install browsers once:
 To replay CI from a clean install:
 
 - `npm ci && npm run ci:local`
+
+For local E2E debugging, you can override server reuse behavior:
+
+- `PLAYWRIGHT_REUSE_EXISTING_SERVER=true npm run test:e2e`
+- `PLAYWRIGHT_REUSE_EXISTING_SERVER=false npm run test:e2e`
 
 ## Contributing
 

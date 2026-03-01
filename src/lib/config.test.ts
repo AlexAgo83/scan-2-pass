@@ -31,6 +31,37 @@ describe("resolveAppConfig", () => {
     );
   });
 
+  test("falls back to default receiver in development when value is invalid", () => {
+    const config = resolveAppConfig({
+      DEV: true,
+      VITE_FORMSUBMIT_RECEIVER: "invalid",
+    });
+
+    expect(config.formSubmitReceiver).toBe("a.agostini.fr@gmail.com");
+  });
+
+  test("throws when receiver is invalid in non-development mode", () => {
+    expect(() =>
+      resolveAppConfig({
+        DEV: false,
+        VITE_FORMSUBMIT_RECEIVER: "invalid",
+      }),
+    ).toThrow(
+      "VITE_FORMSUBMIT_RECEIVER must be a valid email in non-development environments.",
+    );
+  });
+
+  test("throws when receiver is missing in non-development mode", () => {
+    expect(() =>
+      resolveAppConfig({
+        DEV: false,
+        VITE_FORMSUBMIT_RECEIVER: "",
+      }),
+    ).toThrow(
+      "VITE_FORMSUBMIT_RECEIVER must be a valid email in non-development environments.",
+    );
+  });
+
   test("uses fallback color when env color is invalid", () => {
     const config = resolveAppConfig({
       VITE_THEME_PRIMARY_COLOR: "javascript:alert(1)",

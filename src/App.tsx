@@ -5,10 +5,14 @@ import "./App.css";
 
 function App() {
   const { config, locale, copy, headerText, themeVariables } = useAppRuntime();
-  const { formData, errors, isSubmitting, onInputChange, onSubmit } =
-    useContactForm(
-    copy.validation,
-    );
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    submitRecoveryMessage,
+    onInputChange,
+    onSubmit,
+  } = useContactForm(copy.validation, copy.form.submitRecovery);
 
   useDocumentMetadataEffects(config, locale);
 
@@ -106,6 +110,11 @@ function App() {
           {isSubmitting ? (
             <p className="submit-status" role="status" aria-live="polite">
               {copy.form.submitting}
+            </p>
+          ) : null}
+          {submitRecoveryMessage ? (
+            <p className="submit-recovery" role="alert">
+              {submitRecoveryMessage}
             </p>
           ) : null}
         </form>

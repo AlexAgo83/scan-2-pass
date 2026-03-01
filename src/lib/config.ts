@@ -221,6 +221,37 @@ function cleanEmail(value: EnvValue, fallback: string): string {
   return fallback;
 }
 
+function isNonDevelopmentMode(env: AppEnv): boolean {
+  if (env.DEV === true) {
+    return false;
+  }
+  if (env.DEV === false) {
+    return true;
+  }
+
+  const runtimeMode = cleanText(env.MODE ?? env.NODE_ENV, "").toLowerCase();
+  return (
+    runtimeMode === "production" ||
+    runtimeMode === "staging" ||
+    runtimeMode === "test"
+  );
+}
+
+function resolveFormSubmitReceiver(env: AppEnv): string {
+  const receiver = cleanEmail(env.VITE_FORMSUBMIT_RECEIVER, "");
+  if (receiver) {
+    return receiver;
+  }
+
+  if (isNonDevelopmentMode(env)) {
+    throw new Error(
+      "VITE_FORMSUBMIT_RECEIVER must be a valid email in non-development environments.",
+    );
+  }
+
+  return DEFAULT_CONFIG.formSubmitReceiver;
+}
+
 function cleanFormSubmitEndpoint(endpoint: EnvValue, receiver: string): string {
   const endpointValue = cleanText(endpoint, "");
   if (endpointValue) {
@@ -264,10 +295,7 @@ export function resolveAppConfig(env: AppEnv = {}): AppConfig {
     env.VITE_REDIRECT_URL,
     DEFAULT_CONFIG.redirectUrl,
   );
-  const formSubmitReceiver = cleanEmail(
-    env.VITE_FORMSUBMIT_RECEIVER,
-    DEFAULT_CONFIG.formSubmitReceiver,
-  );
+  const formSubmitReceiver = resolveFormSubmitReceiver(env);
   const formSubmitEndpoint = cleanFormSubmitEndpoint(
     env.VITE_FORMSUBMIT_ENDPOINT,
     formSubmitReceiver,

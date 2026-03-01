@@ -31,6 +31,11 @@ Run:
 - `npm run lint`
 - `npm run test`
 - `npm run build`
+- `npm run test:e2e`
+
+If you need to control Playwright server reuse locally:
+
+- `PLAYWRIGHT_REUSE_EXISTING_SERVER=true npm run test:e2e`
 
 ## Pull request checklist
 

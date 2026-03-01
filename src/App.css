@@ -150,6 +150,12 @@
   color: color-mix(in srgb, var(--theme-text) 80%, var(--theme-primary));
 }
 
+.submit-recovery {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: #b91c1c;
+}
+
 .field-error {
   margin: 0.22rem 0 0;
   font-size: 0.88rem;
