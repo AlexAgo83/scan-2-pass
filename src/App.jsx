@@ -1,11 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import { resolveAppConfig } from "./lib/config";
+import { getTranslations, resolveLocale } from "./lib/i18n";
 import { persistFormPrefill, resolveInitialFormData } from "./lib/prefill";
 import { hasValidationErrors, validateFormInput } from "./lib/validation";
 import "./App.css";
 
 function App() {
   const config = useMemo(() => resolveAppConfig(import.meta.env), []);
+  const locale = useMemo(
+    () =>
+      resolveLocale(typeof window !== "undefined" ? window.navigator : undefined),
+    [],
+  );
+  const copy = useMemo(() => getTranslations(locale), [locale]);
   const [formData, setFormData] = useState(() =>
     resolveInitialFormData(
       { email: "", firstName: "", lastName: "" },
@@ -18,6 +25,12 @@ function App() {
   useEffect(() => {
     document.title = config.siteName;
   }, [config.siteName]);
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = locale;
+    }
+  }, [locale]);
 
   useEffect(() => {
     const fontUrl = config.theme.fontUrl;
@@ -66,7 +79,7 @@ function App() {
   };
 
   const onSubmit = (event) => {
-    const nextErrors = validateFormInput(formData);
+    const nextErrors = validateFormInput(formData, copy.validation);
     setErrors(nextErrors);
 
     if (hasValidationErrors(nextErrors)) {
@@ -91,7 +104,7 @@ function App() {
       <div className="ambient-shape ambient-shape--bottom" aria-hidden="true" />
       <main className="landing-card">
         <header className="landing-header">
-          <img className="brand-logo" src={config.brandLogoUrl} alt="Site logo" />
+          <img className="brand-logo" src={config.brandLogoUrl} alt={copy.form.logoAlt} />
           <p className="site-name">{config.siteName}</p>
           <h1 className="header-text">{config.headerText}</h1>
         </header>
@@ -107,17 +120,17 @@ function App() {
           <input type="hidden" name="_subject" value={config.formSubmitSubject} />
           <input type="hidden" name="_captcha" value={config.formSubmitCaptcha} />
           <div className="honeypot-wrap" aria-hidden="true">
-            <label htmlFor="honey-field">Do not fill this field</label>
+            <label htmlFor="honey-field">{copy.form.honeypotLabel}</label>
             <input id="honey-field" type="text" name="_honey" tabIndex="-1" />
           </div>
 
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">{copy.form.emailLabel}</label>
           <input
             id="email"
             name="email"
             type="email"
             autoComplete="email"
-            placeholder="you@example.com"
+            placeholder={copy.form.emailPlaceholder}
             value={formData.email}
             onChange={onInputChange}
             aria-invalid={errors.email ? "true" : "false"}
@@ -130,13 +143,13 @@ function App() {
             </p>
           ) : null}
 
-          <label htmlFor="firstName">First name</label>
+          <label htmlFor="firstName">{copy.form.firstNameLabel}</label>
           <input
             id="firstName"
             name="firstName"
             type="text"
             autoComplete="given-name"
-            placeholder="John"
+            placeholder={copy.form.firstNamePlaceholder}
             value={formData.firstName}
             onChange={onInputChange}
             aria-invalid={errors.firstName ? "true" : "false"}
@@ -149,13 +162,13 @@ function App() {
             </p>
           ) : null}
 
-          <label htmlFor="lastName">Last name</label>
+          <label htmlFor="lastName">{copy.form.lastNameLabel}</label>
           <input
             id="lastName"
             name="lastName"
             type="text"
             autoComplete="family-name"
-            placeholder="Doe"
+            placeholder={copy.form.lastNamePlaceholder}
             value={formData.lastName}
             onChange={onInputChange}
             aria-invalid={errors.lastName ? "true" : "false"}
@@ -168,7 +181,7 @@ function App() {
             </p>
           ) : null}
 
-          <button type="submit">Continue</button>
+          <button type="submit">{copy.form.submit}</button>
         </form>
 
       </main>

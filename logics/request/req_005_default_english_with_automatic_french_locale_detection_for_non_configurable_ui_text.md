@@ -1,8 +1,8 @@
 ## req_005_default_english_with_automatic_french_locale_detection_for_non_configurable_ui_text - Default English with automatic French locale detection for non-configurable UI text
 > From version: 0.1.0
-> Status: Draft
-> Understanding: 98%
-> Confidence: 97%
+> Status: Done
+> Understanding: 100%
+> Confidence: 98%
 > Complexity: Medium
 > Theme: UX
 > Reminder: Update status/understanding/confidence and references when you edit this doc.
@@ -76,6 +76,14 @@
 
 # Tasks
 - `logics/tasks/task_002_super_orchestration_delivery_execution_for_item_005_and_item_006_with_validation_gates.md`
+
+# Implementation snapshot
+- `src/lib/i18n.js`
+- `src/lib/i18n.test.js`
+- `src/App.jsx`
+- `src/lib/validation.js`
+- `src/lib/validation.test.js`
+- `README.md`
 
 # References
 - `src/App.jsx`

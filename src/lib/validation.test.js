@@ -25,6 +25,26 @@ describe("validateFormInput", () => {
     expect(errors.email).toBe("Please enter a valid email address.");
   });
 
+  test("supports localized messages", () => {
+    const errors = validateFormInput(
+      {
+        email: "",
+        firstName: "",
+        lastName: "",
+      },
+      {
+        firstNameRequired: "Le prénom est requis.",
+        lastNameRequired: "Le nom est requis.",
+        emailRequired: "L'adresse e-mail est requise.",
+        emailInvalid: "Veuillez saisir une adresse e-mail valide.",
+      },
+    );
+
+    expect(errors.firstName).toBe("Le prénom est requis.");
+    expect(errors.lastName).toBe("Le nom est requis.");
+    expect(errors.email).toBe("L'adresse e-mail est requise.");
+  });
+
   test("returns no error for valid payload", () => {
     const errors = validateFormInput({
       email: "a.agostini.fr@gmail.com",
@@ -36,4 +56,3 @@ describe("validateFormInput", () => {
     expect(hasValidationErrors(errors)).toBe(false);
   });
 });
-

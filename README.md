@@ -68,6 +68,13 @@ Field prefill priority is deterministic:
 
 Users can always edit prefilled values before submission.
 
+## Language behavior
+
+- Default UI language is English.
+- If browser/device locale starts with `fr` (for example `fr-FR`, `fr-CA`), non-configurable UI text is shown in French.
+- Environment-configured text (for example `VITE_HEADER_TEXT`) is not overridden by locale detection.
+- If locale detection is unavailable, UI falls back to English.
+
 ## Render deployment
 
 `render.yaml` is included for static hosting:
