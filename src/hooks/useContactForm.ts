@@ -1,12 +1,17 @@
 import {
   useCallback,
   useEffect,
+  useRef,
   useState,
   type ChangeEvent,
   type FormEvent,
 } from "react";
 import type { ContactFormData } from "../lib/form-types";
-import { persistFormPrefill, resolveInitialFormData } from "../lib/prefill";
+import {
+  clearFormPrefill,
+  persistFormPrefill,
+  resolveInitialFormData,
+} from "../lib/prefill";
 import {
   hasValidationErrors,
   validateFormInput,
@@ -30,6 +35,7 @@ function isFormFieldName(value: string): value is FormFieldName {
 interface UseContactFormResult {
   formData: ContactFormData;
   errors: ValidationErrors;
+  isSubmitting: boolean;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
@@ -45,6 +51,8 @@ export function useContactForm(
     ),
   );
   const [errors, setErrors] = useState<ValidationErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submitInFlightRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -72,11 +80,23 @@ export function useContactForm(
 
   const onSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
+      if (submitInFlightRef.current) {
+        event.preventDefault();
+        return;
+      }
+
       const nextErrors = validateFormInput(formData, validationMessages);
       setErrors(nextErrors);
 
       if (hasValidationErrors(nextErrors)) {
         event.preventDefault();
+        return;
+      }
+
+      submitInFlightRef.current = true;
+      setIsSubmitting(true);
+      if (typeof window !== "undefined") {
+        clearFormPrefill(window.localStorage);
       }
     },
     [formData, validationMessages],
@@ -85,6 +105,7 @@ export function useContactForm(
   return {
     formData,
     errors,
+    isSubmitting,
     onInputChange,
     onSubmit,
   };

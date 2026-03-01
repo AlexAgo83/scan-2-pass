@@ -30,7 +30,7 @@ All frontend env variables are public at runtime. Do not place secrets in `.env`
 
 - `VITE_PROJECT_URL`: project reference URL.
 - `VITE_SITE_NAME`: site name shown on page.
-- `VITE_BRAND_LOGO_URL`: logo path or URL.
+- `VITE_BRAND_LOGO_URL`: logo path or URL (root-relative or `http/https` only).
 - `VITE_FAVICON_URL`: favicon path or URL (`/favicon.svg` or `https://...`).
 - `VITE_HEADER_TEXT`: header text fallback above the form.
 - `VITE_HEADER_TEXT_EN`: header text shown when locale is English.
@@ -77,6 +77,7 @@ Field prefill priority is deterministic:
 3. Browser-native autofill (`autocomplete`) and manual input.
 
 Users can always edit prefilled values before submission.
+Stored prefill values use a 24-hour retention window and are cleared when a valid form submission is triggered.
 
 ## Language behavior
 
@@ -101,7 +102,7 @@ Users can always edit prefilled values before submission.
 - `npm run test` (unit + UI)
 - `npm run test:ci` (unit + UI + coverage report)
 - `npm run test:e2e` (Playwright smoke tests)
-- `npm run ci:local` (same sequence as GitHub CI: lint + test + build)
+- `npm run ci:local` (same sequence as GitHub CI: lint + typecheck + unit/UI coverage + build + E2E)
 
 Before first E2E run on a new machine, install browsers once:
 

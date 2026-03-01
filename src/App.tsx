@@ -5,9 +5,10 @@ import "./App.css";
 
 function App() {
   const { config, locale, copy, headerText, themeVariables } = useAppRuntime();
-  const { formData, errors, onInputChange, onSubmit } = useContactForm(
+  const { formData, errors, isSubmitting, onInputChange, onSubmit } =
+    useContactForm(
     copy.validation,
-  );
+    );
 
   useDocumentMetadataEffects(config, locale);
 
@@ -31,6 +32,7 @@ function App() {
           method="POST"
           action={config.formSubmitEndpoint}
           onSubmit={onSubmit}
+          aria-busy={isSubmitting ? "true" : "false"}
           noValidate
         >
           <input type="hidden" name="_next" value={config.redirectUrl} />
@@ -98,7 +100,14 @@ function App() {
             </p>
           ) : null}
 
-          <button type="submit">{copy.form.submit}</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? copy.form.submitting : copy.form.submit}
+          </button>
+          {isSubmitting ? (
+            <p className="submit-status" role="status" aria-live="polite">
+              {copy.form.submitting}
+            </p>
+          ) : null}
         </form>
       </main>
     </div>

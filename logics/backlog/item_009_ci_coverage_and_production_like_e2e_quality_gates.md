@@ -1,9 +1,9 @@
 ## item_009_ci_coverage_and_production_like_e2e_quality_gates - CI coverage and production-like E2E quality gates
 > From version: 1.0.0
-> Status: To Do
+> Status: Done
 > Understanding: 100%
 > Confidence: 97%
-> Progress: 0%
+> Progress: 100%
 > Complexity: Medium
 > Theme: Engineering Quality
 > Reminder: Update status/understanding/confidence/progress and linked task references when you edit this doc.
@@ -42,8 +42,9 @@
 # Notes
 - Derived from `logics/request/req_006_quality_hardening_security_privacy_ci_and_test_reliability.md`.
 - Delivery task: `logics/tasks/task_003_super_orchestration_delivery_execution_for_item_007_to_item_010_with_validation_gates.md`.
-- Planned target artifacts:
+- Implemented artifacts:
   - `.github/workflows/ci.yml`
   - `vite.config.ts`
   - `playwright.config.ts`
   - `package.json`
+  - `eslint.config.js`

@@ -1,8 +1,8 @@
 ## req_006_quality_hardening_security_privacy_ci_and_test_reliability - Quality hardening for security, privacy, CI, and test reliability
 > From version: 1.0.0
-> Status: In Progress
+> Status: Done
 > Understanding: 100%
-> Confidence: 98%
+> Confidence: 99%
 > Complexity: Medium
 > Theme: Quality
 > Reminder: Update status/understanding/confidence and references when you edit this doc.
@@ -95,7 +95,21 @@
 - `logics/tasks/task_003_super_orchestration_delivery_execution_for_item_007_to_item_010_with_validation_gates.md`
 
 # Implementation snapshot
-- Not started in this request.
+- `src/lib/config.ts`
+- `src/lib/config.test.ts`
+- `src/lib/prefill.ts`
+- `src/lib/prefill.test.ts`
+- `src/hooks/useContactForm.ts`
+- `src/App.tsx`
+- `src/lib/i18n.ts`
+- `src/App.css`
+- `src/tests/app.ui.test.tsx`
+- `vite.config.ts`
+- `playwright.config.ts`
+- `.github/workflows/ci.yml`
+- `eslint.config.js`
+- `package.json`
+- `README.md`
 
 # References
 - `src/lib/config.ts`

@@ -1,6 +1,12 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import type { StorageLike } from "./prefill";
-import { PREFILL_STORAGE_KEY, resolveInitialFormData } from "./prefill";
+import {
+  PREFILL_STORAGE_KEY,
+  PREFILL_TTL_MS,
+  clearFormPrefill,
+  persistFormPrefill,
+  resolveInitialFormData,
+} from "./prefill";
 
 function makeStorage(initialValue: string | null = null): StorageLike {
   const map = new Map<string, string>();
@@ -11,6 +17,9 @@ function makeStorage(initialValue: string | null = null): StorageLike {
     getItem: (key) => map.get(key) || null,
     setItem: (key, value) => {
       map.set(key, value);
+    },
+    removeItem: (key) => {
+      map.delete(key);
     },
   };
 }
@@ -58,5 +67,46 @@ describe("resolveInitialFormData", () => {
     expect(initial.email).toBe("");
     expect(initial.firstName).toBe("");
     expect(initial.lastName).toBe("Doe");
+  });
+
+  test("ignores expired storage prefill values", () => {
+    const nowSpy = vi.spyOn(Date, "now").mockReturnValue(2_000_000);
+    const storage = makeStorage(
+      JSON.stringify({
+        savedAt: 2_000_000 - PREFILL_TTL_MS - 1,
+        values: {
+          email: "old@example.com",
+          firstName: "Old",
+          lastName: "Data",
+        },
+      }),
+    );
+
+    const initial = resolveInitialFormData(
+      { email: "", firstName: "", lastName: "" },
+      "",
+      storage,
+    );
+
+    expect(initial).toEqual({ email: "", firstName: "", lastName: "" });
+    nowSpy.mockRestore();
+  });
+
+  test("clears persisted prefill data", () => {
+    const storage = makeStorage();
+    persistFormPrefill(storage, {
+      email: "a@example.com",
+      firstName: "A",
+      lastName: "B",
+    });
+
+    clearFormPrefill(storage);
+    const initial = resolveInitialFormData(
+      { email: "", firstName: "", lastName: "" },
+      "",
+      storage,
+    );
+
+    expect(initial).toEqual({ email: "", firstName: "", lastName: "" });
   });
 });

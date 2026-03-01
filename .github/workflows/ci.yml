@@ -33,8 +33,17 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Test
-        run: npm run test
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests with coverage
+        run: npm run test:ci
 
       - name: Build
         run: npm run build
+
+      - name: Install Playwright browser
+        run: npx playwright install chromium
+
+      - name: E2E (production-like)
+        run: npm run test:e2e

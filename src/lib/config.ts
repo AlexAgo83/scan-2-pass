@@ -243,7 +243,7 @@ function cleanFormSubmitEndpoint(endpoint: EnvValue, receiver: string): string {
 export function resolveAppConfig(env: AppEnv = {}): AppConfig {
   const projectUrl = cleanUrl(env.VITE_PROJECT_URL, DEFAULT_CONFIG.projectUrl);
   const siteName = cleanText(env.VITE_SITE_NAME, DEFAULT_CONFIG.siteName);
-  const brandLogoUrl = cleanText(
+  const brandLogoUrl = cleanAssetUrl(
     env.VITE_BRAND_LOGO_URL,
     DEFAULT_CONFIG.brandLogoUrl,
   );

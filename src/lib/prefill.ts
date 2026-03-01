@@ -2,10 +2,31 @@ import type { ContactFormData } from "./form-types";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PREFILL_STORAGE_KEY = "scan2pass_prefill_v1";
+const PREFILL_TTL_MS = 24 * 60 * 60 * 1000;
 
 export interface StorageLike {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
+  removeItem?(key: string): void;
+}
+
+interface PersistedPrefillPayload {
+  savedAt: number;
+  values: ContactFormData;
+}
+
+function isPersistedPrefillPayload(
+  value: unknown,
+): value is PersistedPrefillPayload {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+  const candidate = value as { savedAt?: unknown; values?: unknown };
+  return (
+    typeof candidate.savedAt === "number" &&
+    typeof candidate.values === "object" &&
+    candidate.values !== null
+  );
 }
 
 function normalizeName(value: unknown): string {
@@ -60,7 +81,14 @@ function parseStoragePrefill(storage: StorageLike | null): ContactFormData {
     if (!raw) {
       return normalizePrefillInput(undefined);
     }
-    return normalizePrefillInput(JSON.parse(raw) as Partial<ContactFormData>);
+    const parsed = JSON.parse(raw) as unknown;
+    if (isPersistedPrefillPayload(parsed)) {
+      if (Date.now() - parsed.savedAt > PREFILL_TTL_MS) {
+        return normalizePrefillInput(undefined);
+      }
+      return normalizePrefillInput(parsed.values as Partial<ContactFormData>);
+    }
+    return normalizePrefillInput(parsed as Partial<ContactFormData>);
   } catch {
     return normalizePrefillInput(undefined);
   }
@@ -101,11 +129,29 @@ export function persistFormPrefill(
     return;
   }
   try {
-    const normalized = normalizePrefillInput(formData);
-    storage.setItem(PREFILL_STORAGE_KEY, JSON.stringify(normalized));
+    const payload: PersistedPrefillPayload = {
+      savedAt: Date.now(),
+      values: normalizePrefillInput(formData),
+    };
+    storage.setItem(PREFILL_STORAGE_KEY, JSON.stringify(payload));
   } catch {
     // Ignore storage failures (private mode or quota issues).
   }
 }
 
-export { PREFILL_STORAGE_KEY };
+export function clearFormPrefill(storage: StorageLike | null): void {
+  if (!storage) {
+    return;
+  }
+  try {
+    if (typeof storage.removeItem === "function") {
+      storage.removeItem(PREFILL_STORAGE_KEY);
+      return;
+    }
+    storage.setItem(PREFILL_STORAGE_KEY, "");
+  } catch {
+    // Ignore storage failures (private mode or quota issues).
+  }
+}
+
+export { PREFILL_STORAGE_KEY, PREFILL_TTL_MS };

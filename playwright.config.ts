@@ -10,7 +10,7 @@ export default defineConfig({
     baseURL: `http://${appHost}:${appPort}`,
   },
   webServer: {
-    command: `npm run dev -- --host ${appHost} --port ${appPort}`,
+    command: `npm run build && npm run preview -- --host ${appHost} --port ${appPort}`,
     port: appPort,
     reuseExistingServer: true,
   },

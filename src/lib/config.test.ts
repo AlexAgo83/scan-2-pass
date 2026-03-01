@@ -69,6 +69,14 @@ describe("resolveAppConfig", () => {
     expect(config.faviconUrl).toBe("/logo-default.svg");
   });
 
+  test("falls back to default logo when brand logo URL is invalid", () => {
+    const config = resolveAppConfig({
+      VITE_BRAND_LOGO_URL: "javascript:alert(1)",
+    });
+
+    expect(config.brandLogoUrl).toBe("/logo-default.svg");
+  });
+
   test("localizes header text with dedicated EN/FR variables", () => {
     const config = resolveAppConfig({
       VITE_HEADER_TEXT_EN: "Welcome to Circle Mobility",

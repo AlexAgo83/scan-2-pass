@@ -132,9 +132,22 @@
   filter: saturate(1.06);
 }
 
+.contact-form button:disabled {
+  cursor: not-allowed;
+  transform: none;
+  filter: saturate(0.85);
+  opacity: 0.8;
+}
+
 .contact-form button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--theme-primary) 35%, transparent);
   outline-offset: 3px;
+}
+
+.submit-status {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--theme-text) 80%, var(--theme-primary));
 }
 
 .field-error {

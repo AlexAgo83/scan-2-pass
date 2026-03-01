@@ -21,4 +21,32 @@ describe("App UI", () => {
     expect(screen.getByText("First name is required.")).toBeInTheDocument();
     expect(screen.getByText("Last name is required.")).toBeInTheDocument();
   });
+
+  test("shows submitting state and disables submit on valid payload", () => {
+    render(<App />);
+
+    const submitButton = screen.getByRole("button", { name: "Continue" });
+    const form = submitButton.closest("form");
+    expect(form).not.toBeNull();
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
+
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: "alex@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText("First name"), {
+      target: { value: "Alex" },
+    });
+    fireEvent.change(screen.getByLabelText("Last name"), {
+      target: { value: "Agostini" },
+    });
+
+    fireEvent.click(submitButton);
+
+    expect(
+      screen.getByRole("button", { name: "Submitting..." }),
+    ).toBeDisabled();
+    expect(screen.getByRole("status")).toHaveTextContent("Submitting...");
+  });
 });

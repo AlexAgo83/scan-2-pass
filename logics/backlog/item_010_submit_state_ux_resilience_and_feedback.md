@@ -1,9 +1,9 @@
 ## item_010_submit_state_ux_resilience_and_feedback - Submit state UX resilience and feedback
 > From version: 1.0.0
-> Status: To Do
+> Status: Done
 > Understanding: 100%
 > Confidence: 96%
-> Progress: 0%
+> Progress: 100%
 > Complexity: Low
 > Theme: UX
 > Reminder: Update status/understanding/confidence/progress and linked task references when you edit this doc.
@@ -44,7 +44,9 @@
 # Notes
 - Derived from `logics/request/req_006_quality_hardening_security_privacy_ci_and_test_reliability.md`.
 - Delivery task: `logics/tasks/task_003_super_orchestration_delivery_execution_for_item_007_to_item_010_with_validation_gates.md`.
-- Planned target artifacts:
+- Implemented artifacts:
   - `src/hooks/useContactForm.ts`
   - `src/App.tsx`
+  - `src/lib/i18n.ts`
+  - `src/App.css`
   - `src/tests/app.ui.test.tsx`

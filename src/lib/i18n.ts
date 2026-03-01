@@ -23,6 +23,7 @@ interface FormTranslations {
   lastNameLabel: string;
   lastNamePlaceholder: string;
   submit: string;
+  submitting: string;
 }
 
 export interface Translations {
@@ -42,6 +43,7 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       lastNameLabel: "Last name",
       lastNamePlaceholder: "Doe",
       submit: "Continue",
+      submitting: "Submitting...",
     },
     validation: {
       firstNameRequired: "First name is required.",
@@ -61,6 +63,7 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       lastNameLabel: "Nom",
       lastNamePlaceholder: "Dupont",
       submit: "Continuer",
+      submitting: "Envoi en cours...",
     },
     validation: {
       firstNameRequired: "Le prénom est requis.",
