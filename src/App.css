@@ -80,6 +80,57 @@
   line-height: 1.2;
 }
 
+.links-hub {
+  margin-top: 0.65rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.hub-title {
+  margin: 0;
+  font-family: var(--theme-heading-font);
+  font-size: clamp(1.25rem, 3.6vw, 1.65rem);
+  line-height: 1.2;
+}
+
+.hub-subtitle {
+  margin: 0;
+  font-size: 0.96rem;
+  color: color-mix(in srgb, var(--theme-text) 80%, #6b7280);
+}
+
+.hub-links {
+  display: grid;
+  gap: 0.68rem;
+  margin-top: 0.25rem;
+}
+
+.hub-link {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.8rem 0.95rem;
+  border-radius: 12px;
+  border: 1.4px solid color-mix(in srgb, var(--theme-primary) 35%, #d1d5db);
+  background: color-mix(in srgb, var(--theme-primary) 10%, #ffffff);
+  color: color-mix(in srgb, var(--theme-primary) 80%, #111827);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 140ms ease, background-color 140ms ease;
+}
+
+.hub-link:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--theme-primary) 15%, #ffffff);
+}
+
+.hub-link:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--theme-primary) 35%, transparent);
+  outline-offset: 3px;
+}
+
 .contact-form {
   display: grid;
   gap: 0.42rem;

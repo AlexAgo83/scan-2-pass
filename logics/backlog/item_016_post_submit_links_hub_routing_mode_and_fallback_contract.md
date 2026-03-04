@@ -1,9 +1,9 @@
 ## item_016_post_submit_links_hub_routing_mode_and_fallback_contract - Post-submit links hub routing mode and fallback contract
 > From version: 1.0.2
-> Status: In Progress
-> Understanding: 97%
-> Confidence: 95%
-> Progress: 0%
+> Status: Done
+> Understanding: 100%
+> Confidence: 97%
+> Progress: 100%
 > Complexity: Medium
 > Theme: UX
 > Reminder: Update status/understanding/confidence/progress and linked task references when you edit this doc.
@@ -46,3 +46,9 @@
 # Notes
 - Derived from `logics/request/req_008_post_submit_intermediate_links_hub_with_configurable_destinations.md`.
 - Delivery task: `logics/tasks/task_005_super_orchestration_delivery_execution_for_item_016_to_item_019_with_validation_gates.md`.
+- Implemented artifacts:
+  - `src/App.tsx`
+  - `src/lib/post-submit-routing.ts`
+  - `src/lib/post-submit-routing.test.ts`
+  - `src/tests/app.ui.test.tsx`
+  - `README.md`

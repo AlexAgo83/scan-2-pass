@@ -42,6 +42,11 @@ All frontend env variables are public at runtime. Do not place secrets in `.env`
 - `VITE_HEADER_TEXT_FONT_WEIGHT`: header font weight (`normal`, `bold`, or numeric `400-900`).
 - `VITE_HEADER_TEXT_FONT_STYLE`: header font style (`normal`, `italic`, `oblique`).
 - `VITE_REDIRECT_URL`: redirect URL after successful form submit.
+- `VITE_DESTINATION_LINKS_JSON`: optional JSON array for post-submit destinations. Entry schema:
+  - `label.en` and `label.fr`: localized labels for the hub;
+  - `url`: destination URL (`http/https` only);
+  - `order`: numeric sort order (ascending);
+  - `enabled`: boolean.
 - `VITE_FORMSUBMIT_RECEIVER`: receiver email. Required and validated in non-development runtimes.
 - `VITE_FORMSUBMIT_ENDPOINT`: optional direct FormSubmit endpoint (`https://formsubmit.co/<email>`). If empty, endpoint is composed from receiver.
 - `VITE_FORMSUBMIT_SUBJECT`: optional subject for submission email.
@@ -54,6 +59,10 @@ All frontend env variables are public at runtime. Do not place secrets in `.env`
 - `VITE_THEME_FONT_URL`: optional Google Fonts stylesheet URL.
 
 For hex values in `.env`, wrap them in quotes (example: `VITE_THEME_PRIMARY_COLOR=\"#5a6bff\"`) so `#` is not treated as a comment.
+
+Example for `VITE_DESTINATION_LINKS_JSON`:
+
+`[{"label":{"fr":"Voir la video","en":"Watch the video"},"url":"https://youtube.com/watch?v=demo","order":1,"enabled":true},{"label":{"fr":"Telecharger le guide","en":"Download the guide"},"url":"https://example.com/guide.pdf","order":2,"enabled":true}]`
 
 ## FormSubmit note
 
@@ -87,6 +96,13 @@ Stored prefill values use a 24-hour retention window, expired entries are purged
 
 - During valid submit, the CTA is disabled and a pending status is shown.
 - If navigation does not complete after the submit timeout window, submit state is automatically restored and the user can retry.
+
+## Post-submit routing
+
+- With `2+` valid enabled entries in `VITE_DESTINATION_LINKS_JSON`, submit redirects to an internal links hub page.
+- With exactly `1` valid enabled entry, submit redirects directly to that link (no hub).
+- With `0` valid enabled entries (or malformed JSON), submit falls back to `VITE_REDIRECT_URL`.
+- Invalid destination entries are ignored safely at runtime.
 
 ## Language behavior
 

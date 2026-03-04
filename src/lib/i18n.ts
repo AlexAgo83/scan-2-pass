@@ -27,8 +27,14 @@ interface FormTranslations {
   submitRecovery: string;
 }
 
+interface HubTranslations {
+  title: string;
+  subtitle: string;
+}
+
 export interface Translations {
   form: FormTranslations;
+  hub: HubTranslations;
   validation: ValidationMessages;
 }
 
@@ -47,6 +53,10 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       submitting: "Submitting...",
       submitRecovery:
         "Submission took longer than expected. Please review your details and try again.",
+    },
+    hub: {
+      title: "Choose your content",
+      subtitle: "Select a destination to continue.",
     },
     validation: {
       firstNameRequired: "First name is required.",
@@ -69,6 +79,10 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       submitting: "Envoi en cours...",
       submitRecovery:
         "L'envoi prend plus de temps que prevu. Verifiez vos informations puis reessayez.",
+    },
+    hub: {
+      title: "Choisissez votre contenu",
+      subtitle: "Selectionnez une destination pour continuer.",
     },
     validation: {
       firstNameRequired: "Le prénom est requis.",

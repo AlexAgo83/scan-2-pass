@@ -15,6 +15,7 @@ describe("resolveAppConfig", () => {
     expect(config.formSubmitEndpoint).toBe(
       "https://formsubmit.co/a.agostini.fr@gmail.com",
     );
+    expect(config.destinationLinks).toEqual([]);
     expect(config.headerTypography.fontSize).toBe("clamp(1.35rem, 4vw, 1.8rem)");
     expect(config.headerTypography.fontWeight).toBe("700");
     expect(config.headerTypography.fontStyle).toBe("normal");
@@ -158,5 +159,60 @@ describe("resolveAppConfig", () => {
       fontWeight: "700",
       fontStyle: "normal",
     });
+  });
+
+  test("parses destination links from JSON and sorts by order", () => {
+    const config = resolveAppConfig({
+      VITE_DESTINATION_LINKS_JSON: JSON.stringify([
+        {
+          label: { en: "Guide", fr: "Guide" },
+          url: "https://example.com/guide",
+          order: 2,
+          enabled: true,
+        },
+        {
+          label: { en: "Video", fr: "Video" },
+          url: "https://example.com/video",
+          order: 1,
+          enabled: true,
+        },
+      ]),
+    });
+
+    expect(config.destinationLinks.map((link) => link.url)).toEqual([
+      "https://example.com/video",
+      "https://example.com/guide",
+    ]);
+  });
+
+  test("ignores malformed destination link payloads safely", () => {
+    const malformed = resolveAppConfig({
+      VITE_DESTINATION_LINKS_JSON: "{invalid",
+    });
+    const invalidEntries = resolveAppConfig({
+      VITE_DESTINATION_LINKS_JSON: JSON.stringify([
+        {
+          label: { en: "Enabled but bad url", fr: "Actif mais mauvais url" },
+          url: "javascript:alert(1)",
+          order: 1,
+          enabled: true,
+        },
+        {
+          label: { en: "Disabled", fr: "Desactive" },
+          url: "https://example.com/disabled",
+          order: 2,
+          enabled: false,
+        },
+        {
+          label: { en: "Missing French", fr: "" },
+          url: "https://example.com/missing-fr",
+          order: 3,
+          enabled: true,
+        },
+      ]),
+    });
+
+    expect(malformed.destinationLinks).toEqual([]);
+    expect(invalidEntries.destinationLinks).toEqual([]);
   });
 });

@@ -1,8 +1,8 @@
 ## req_008_post_submit_intermediate_links_hub_with_configurable_destinations - Post-submit intermediate links hub with configurable destinations
 > From version: 1.0.2
-> Status: In Progress
-> Understanding: 97%
-> Confidence: 95%
+> Status: Done
+> Understanding: 100%
+> Confidence: 96%
 > Complexity: Medium
 > Theme: UX
 > Reminder: Update status/understanding/confidence and references when you edit this doc.
@@ -103,7 +103,18 @@
 - `logics/tasks/task_005_super_orchestration_delivery_execution_for_item_016_to_item_019_with_validation_gates.md`
 
 # Implementation snapshot
-- Planning artifacts:
+- Implemented artifacts:
+  - `src/lib/config.ts`
+  - `src/lib/config.test.ts`
+  - `src/lib/post-submit-routing.ts`
+  - `src/lib/post-submit-routing.test.ts`
+  - `src/lib/i18n.ts`
+  - `src/lib/i18n.test.ts`
+  - `src/App.tsx`
+  - `src/App.css`
+  - `src/tests/app.ui.test.tsx`
+  - `.env.example`
+  - `README.md`
   - `logics/backlog/item_016_post_submit_links_hub_routing_mode_and_fallback_contract.md`
   - `logics/backlog/item_017_destination_links_configuration_validation_and_rendering.md`
   - `logics/backlog/item_018_links_hub_bilingual_fr_en_contract_and_ui_copy_alignment.md`

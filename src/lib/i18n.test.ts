@@ -25,10 +25,12 @@ describe("getTranslations", () => {
   test("returns english copy by default", () => {
     const copy = getTranslations("de");
     expect(copy.form.submit).toBe("Continue");
+    expect(copy.hub.title).toBe("Choose your content");
   });
 
   test("returns french copy for french locale", () => {
     const copy = getTranslations("fr");
     expect(copy.form.submit).toBe("Continuer");
+    expect(copy.hub.title).toBe("Choisissez votre contenu");
   });
 });

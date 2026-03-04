@@ -1,9 +1,9 @@
 ## item_018_links_hub_bilingual_fr_en_contract_and_ui_copy_alignment - Links hub bilingual FR/EN contract and UI copy alignment
 > From version: 1.0.2
-> Status: In Progress
-> Understanding: 96%
-> Confidence: 94%
-> Progress: 0%
+> Status: Done
+> Understanding: 100%
+> Confidence: 96%
+> Progress: 100%
 > Complexity: Medium
 > Theme: UX
 > Reminder: Update status/understanding/confidence/progress and linked task references when you edit this doc.
@@ -44,3 +44,8 @@
 # Notes
 - Derived from `logics/request/req_008_post_submit_intermediate_links_hub_with_configurable_destinations.md`.
 - Delivery task: `logics/tasks/task_005_super_orchestration_delivery_execution_for_item_016_to_item_019_with_validation_gates.md`.
+- Implemented artifacts:
+  - `src/lib/i18n.ts`
+  - `src/lib/i18n.test.ts`
+  - `src/App.tsx`
+  - `src/tests/app.ui.test.tsx`

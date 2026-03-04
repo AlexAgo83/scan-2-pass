@@ -18,6 +18,13 @@ export interface HeaderTextByLocale {
   fr: string;
 }
 
+export interface DestinationLinkConfig {
+  label: HeaderTextByLocale;
+  url: string;
+  order: number;
+  enabled: boolean;
+}
+
 export interface AppConfig {
   projectUrl: string;
   siteName: string;
@@ -30,6 +37,7 @@ export interface AppConfig {
   formSubmitEndpoint: string;
   formSubmitSubject: string;
   formSubmitCaptcha: string;
+  destinationLinks: DestinationLinkConfig[];
   headerTypography: HeaderTypographyConfig;
   theme: ThemeConfig;
 }
@@ -57,6 +65,7 @@ const DEFAULT_CONFIG: Omit<AppConfig, "headerTextByLocale"> & {
   formSubmitEndpoint: `https://formsubmit.co/${DEFAULT_RECEIVER}`,
   formSubmitSubject: "Scan 2 Pass - New form submission",
   formSubmitCaptcha: "true",
+  destinationLinks: [],
   headerTypography: {
     fontSize: "clamp(1.35rem, 4vw, 1.8rem)",
     fontWeight: "700",
@@ -221,6 +230,90 @@ function cleanEmail(value: EnvValue, fallback: string): string {
   return fallback;
 }
 
+function cleanHttpUrl(value: unknown): string {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const nextValue = value.trim();
+  if (!nextValue) {
+    return "";
+  }
+
+  try {
+    const parsedUrl = new URL(nextValue);
+    if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+      return "";
+    }
+    return parsedUrl.toString();
+  } catch {
+    return "";
+  }
+}
+
+function cleanDestinationLinks(value: EnvValue): DestinationLinkConfig[] {
+  const payload = cleanText(value, "");
+  if (!payload) {
+    return [];
+  }
+
+  let parsedPayload: unknown;
+  try {
+    parsedPayload = JSON.parse(payload);
+  } catch {
+    return [];
+  }
+
+  if (!Array.isArray(parsedPayload)) {
+    return [];
+  }
+
+  const validLinks: DestinationLinkConfig[] = [];
+
+  for (const entry of parsedPayload) {
+    if (typeof entry !== "object" || entry === null) {
+      continue;
+    }
+
+    const candidate = entry as Record<string, unknown>;
+    if (candidate.enabled !== true) {
+      continue;
+    }
+
+    if (typeof candidate.order !== "number" || !Number.isFinite(candidate.order)) {
+      continue;
+    }
+
+    const url = cleanHttpUrl(candidate.url);
+    if (!url) {
+      continue;
+    }
+
+    if (typeof candidate.label !== "object" || candidate.label === null) {
+      continue;
+    }
+
+    const localizedLabel = candidate.label as Record<string, unknown>;
+    const en = cleanText(localizedLabel.en as EnvValue, "");
+    const fr = cleanText(localizedLabel.fr as EnvValue, "");
+    if (!en || !fr) {
+      continue;
+    }
+
+    validLinks.push({
+      label: {
+        en,
+        fr,
+      },
+      url,
+      order: candidate.order,
+      enabled: true,
+    });
+  }
+
+  return validLinks.sort((left, right) => left.order - right.order);
+}
+
 function isNonDevelopmentMode(env: AppEnv): boolean {
   if (env.DEV === true) {
     return false;
@@ -308,6 +401,7 @@ export function resolveAppConfig(env: AppEnv = {}): AppConfig {
     env.VITE_FORMSUBMIT_CAPTCHA,
     DEFAULT_CONFIG.formSubmitCaptcha,
   );
+  const destinationLinks = cleanDestinationLinks(env.VITE_DESTINATION_LINKS_JSON);
   const headerTextFontSize = cleanHeaderFontSize(
     env.VITE_HEADER_TEXT_FONT_SIZE,
     DEFAULT_CONFIG.headerTypography.fontSize,
@@ -358,6 +452,7 @@ export function resolveAppConfig(env: AppEnv = {}): AppConfig {
     formSubmitEndpoint,
     formSubmitSubject,
     formSubmitCaptcha,
+    destinationLinks,
     headerTypography: {
       fontSize: headerTextFontSize,
       fontWeight: headerTextFontWeight,
