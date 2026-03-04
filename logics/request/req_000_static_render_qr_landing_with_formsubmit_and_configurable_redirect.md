@@ -1,8 +1,8 @@
 ## req_000_static_render_qr_landing_with_formsubmit_and_configurable_redirect - Static Render QR Landing with FormSubmit and Configurable Redirect
 > From version: 0.1.0
-> Status: In Progress
-> Understanding: 100%
-> Confidence: 98%
+> Status: Done
+> Understanding: 99%
+> Confidence: 99%
 > Complexity: Medium
 > Theme: Lead Capture
 > Reminder: Update status/understanding/confidence and references when you edit this doc.
