@@ -42,6 +42,14 @@ function normalizeEmail(value: unknown): string {
   return EMAIL_REGEX.test(nextValue) ? nextValue : "";
 }
 
+function normalizePhone(value: unknown): string {
+  const nextValue = typeof value === "string" ? value.trim() : "";
+  if (!nextValue || nextValue.length > 40) {
+    return "";
+  }
+  return nextValue;
+}
+
 function normalizePrefillInput(
   input: Partial<ContactFormData> | null | undefined,
 ): ContactFormData {
@@ -49,6 +57,7 @@ function normalizePrefillInput(
     email: normalizeEmail(input?.email),
     firstName: normalizeName(input?.firstName),
     lastName: normalizeName(input?.lastName),
+    phone: normalizePhone(input?.phone),
   };
 }
 
@@ -69,6 +78,7 @@ function parseQueryPrefill(search: string): ContactFormData {
       params.get("last_name") ||
       params.get("lastname") ||
       "",
+    phone: params.get("phone") || params.get("telephone") || params.get("tel") || "",
   });
 }
 
@@ -134,6 +144,7 @@ function mergePrefill(
       storagePrefill.lastName,
       baseData.lastName,
     ),
+    phone: pickFirstNonEmpty(queryPrefill.phone, storagePrefill.phone, baseData.phone),
   };
 }
 

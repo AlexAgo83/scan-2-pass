@@ -85,7 +85,7 @@ Generated QR files are saved as PNG under `public/qr/`.
 
 Field prefill priority is deterministic:
 
-1. URL query params (`email`, `firstName`, `lastName`; snake_case aliases supported).
+1. URL query params (`email`, `firstName`, `lastName`, `phone`; snake_case aliases supported for names, plus `telephone`/`tel` for phone).
 2. Last valid local storage values (`scan2pass_prefill_v1`).
 3. Browser-native autofill (`autocomplete`) and manual input.
 

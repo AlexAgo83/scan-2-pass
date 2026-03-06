@@ -31,6 +31,7 @@ describe("resolveInitialFormData", () => {
         email: "storage@example.com",
         firstName: "StorageFirst",
         lastName: "StorageLast",
+        phone: "+1 555 000 1111",
       }),
     );
 
@@ -39,6 +40,7 @@ describe("resolveInitialFormData", () => {
         email: "base@example.com",
         firstName: "BaseFirst",
         lastName: "BaseLast",
+        phone: "",
       },
       "?email=query@example.com&firstName=QueryFirst",
       storage,
@@ -47,6 +49,7 @@ describe("resolveInitialFormData", () => {
     expect(initial.email).toBe("query@example.com");
     expect(initial.firstName).toBe("QueryFirst");
     expect(initial.lastName).toBe("StorageLast");
+    expect(initial.phone).toBe("+1 555 000 1111");
   });
 
   test("keeps documented precedence with non-empty competing sources", () => {
@@ -55,6 +58,7 @@ describe("resolveInitialFormData", () => {
         email: "storage@example.com",
         firstName: "StorageFirst",
         lastName: "StorageLast",
+        phone: "+1 111 111 1111",
       }),
     );
 
@@ -63,6 +67,7 @@ describe("resolveInitialFormData", () => {
         email: "base@example.com",
         firstName: "BaseFirst",
         lastName: "BaseLast",
+        phone: "+1 222 222 2222",
       },
       "?email=query@example.com&lastName=QueryLast",
       storage,
@@ -72,6 +77,7 @@ describe("resolveInitialFormData", () => {
       email: "query@example.com",
       firstName: "StorageFirst",
       lastName: "QueryLast",
+      phone: "+1 111 111 1111",
     });
   });
 
@@ -81,11 +87,12 @@ describe("resolveInitialFormData", () => {
         email: "bad-email",
         firstName: "",
         lastName: "Ok",
+        phone: "  ",
       }),
     );
 
     const initial = resolveInitialFormData(
-      { email: "", firstName: "", lastName: "" },
+      { email: "", firstName: "", lastName: "", phone: "" },
       "?email=invalid&firstName=&lastName=Doe",
       storage,
     );
@@ -93,6 +100,22 @@ describe("resolveInitialFormData", () => {
     expect(initial.email).toBe("");
     expect(initial.firstName).toBe("");
     expect(initial.lastName).toBe("Doe");
+    expect(initial.phone).toBe("");
+  });
+
+  test("reads phone from query aliases", () => {
+    const initial = resolveInitialFormData(
+      { email: "", firstName: "", lastName: "", phone: "" },
+      "?email=query@example.com&telephone=%2B33%206%2012%2034%2056%2078",
+      null,
+    );
+
+    expect(initial).toEqual({
+      email: "query@example.com",
+      firstName: "",
+      lastName: "",
+      phone: "+33 6 12 34 56 78",
+    });
   });
 
   test("ignores expired storage prefill values", () => {
@@ -104,17 +127,18 @@ describe("resolveInitialFormData", () => {
           email: "old@example.com",
           firstName: "Old",
           lastName: "Data",
+          phone: "+1 333 333 3333",
         },
       }),
     );
 
     const initial = resolveInitialFormData(
-      { email: "", firstName: "", lastName: "" },
+      { email: "", firstName: "", lastName: "", phone: "" },
       "",
       storage,
     );
 
-    expect(initial).toEqual({ email: "", firstName: "", lastName: "" });
+    expect(initial).toEqual({ email: "", firstName: "", lastName: "", phone: "" });
     nowSpy.mockRestore();
   });
 
@@ -129,13 +153,18 @@ describe("resolveInitialFormData", () => {
             email: "old@example.com",
             firstName: "Old",
             lastName: "Data",
+            phone: "+1 333 333 3333",
           },
         }),
       setItem: vi.fn(),
       removeItem,
     };
 
-    resolveInitialFormData({ email: "", firstName: "", lastName: "" }, "", storage);
+    resolveInitialFormData(
+      { email: "", firstName: "", lastName: "", phone: "" },
+      "",
+      storage,
+    );
 
     expect(removeItem).toHaveBeenCalledWith(PREFILL_STORAGE_KEY);
     nowSpy.mockRestore();
@@ -147,15 +176,16 @@ describe("resolveInitialFormData", () => {
       email: "a@example.com",
       firstName: "A",
       lastName: "B",
+      phone: "+1 555 444 3333",
     });
 
     clearFormPrefill(storage);
     const initial = resolveInitialFormData(
-      { email: "", firstName: "", lastName: "" },
+      { email: "", firstName: "", lastName: "", phone: "" },
       "",
       storage,
     );
 
-    expect(initial).toEqual({ email: "", firstName: "", lastName: "" });
+    expect(initial).toEqual({ email: "", firstName: "", lastName: "", phone: "" });
   });
 });

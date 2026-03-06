@@ -147,6 +147,21 @@ function FormView({
           </p>
         ) : null}
 
+        <label htmlFor="phone" className="field-label--optional">
+          <span>{copy.form.phoneLabel}</span>
+          <span className="optional-tag">{copy.form.phoneOptionalLabel}</span>
+        </label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          inputMode="tel"
+          placeholder={copy.form.phonePlaceholder}
+          value={formData.phone}
+          onChange={onInputChange}
+        />
+
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? copy.form.submitting : copy.form.submit}
         </button>

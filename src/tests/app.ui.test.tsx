@@ -16,6 +16,7 @@ describe("App UI", () => {
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("First name")).toBeInTheDocument();
     expect(screen.getByLabelText("Last name")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Phone/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Continue" })).toBeInTheDocument();
   });
 
@@ -43,10 +44,10 @@ describe("App UI", () => {
       target: { value: "alex@example.com" },
     });
     fireEvent.change(screen.getByLabelText("First name"), {
-      target: { value: "Alex" },
+      target: { value: "John" },
     });
     fireEvent.change(screen.getByLabelText("Last name"), {
-      target: { value: "Agostini" },
+      target: { value: "Doe" },
     });
 
     fireEvent.click(submitButton);
@@ -72,10 +73,10 @@ describe("App UI", () => {
       target: { value: "alex@example.com" },
     });
     fireEvent.change(screen.getByLabelText("First name"), {
-      target: { value: "Alex" },
+      target: { value: "John" },
     });
     fireEvent.change(screen.getByLabelText("Last name"), {
-      target: { value: "Agostini" },
+      target: { value: "Doe" },
     });
 
     fireEvent.click(submitButton);

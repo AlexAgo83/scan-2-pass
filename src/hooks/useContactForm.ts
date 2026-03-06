@@ -23,9 +23,10 @@ const EMPTY_FORM_DATA: ContactFormData = {
   email: "",
   firstName: "",
   lastName: "",
+  phone: "",
 };
 
-const FORM_FIELD_NAMES = ["email", "firstName", "lastName"] as const;
+const FORM_FIELD_NAMES = ["email", "firstName", "lastName", "phone"] as const;
 type FormFieldName = (typeof FORM_FIELD_NAMES)[number];
 const SUBMIT_RECOVERY_TIMEOUT_MS = 12_000;
 

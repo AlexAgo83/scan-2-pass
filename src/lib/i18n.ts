@@ -22,6 +22,9 @@ interface FormTranslations {
   firstNamePlaceholder: string;
   lastNameLabel: string;
   lastNamePlaceholder: string;
+  phoneLabel: string;
+  phoneOptionalLabel: string;
+  phonePlaceholder: string;
   submit: string;
   submitting: string;
   submitRecovery: string;
@@ -49,6 +52,9 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       firstNamePlaceholder: "John",
       lastNameLabel: "Last name",
       lastNamePlaceholder: "Doe",
+      phoneLabel: "Phone",
+      phoneOptionalLabel: "Optional",
+      phonePlaceholder: "+1 555 123 4567",
       submit: "Continue",
       submitting: "Submitting...",
       submitRecovery:
@@ -75,6 +81,9 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       firstNamePlaceholder: "Jean",
       lastNameLabel: "Nom",
       lastNamePlaceholder: "Dupont",
+      phoneLabel: "Téléphone",
+      phoneOptionalLabel: "Optionnel",
+      phonePlaceholder: "+33 6 12 34 56 78",
       submit: "Continuer",
       submitting: "Envoi en cours...",
       submitRecovery:

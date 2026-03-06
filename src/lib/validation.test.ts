@@ -7,6 +7,7 @@ describe("validateFormInput", () => {
       email: "",
       firstName: "",
       lastName: "",
+      phone: "",
     });
 
     expect(errors.email).toBeDefined();
@@ -18,8 +19,9 @@ describe("validateFormInput", () => {
   test("returns email error when format is invalid", () => {
     const errors = validateFormInput({
       email: "not-an-email",
-      firstName: "Alex",
-      lastName: "Agostini",
+      firstName: "John",
+      lastName: "Doe",
+      phone: "",
     });
 
     expect(errors.email).toBe("Please enter a valid email address.");
@@ -31,6 +33,7 @@ describe("validateFormInput", () => {
         email: "",
         firstName: "",
         lastName: "",
+        phone: "",
       },
       {
         firstNameRequired: "Le prénom est requis.",
@@ -48,8 +51,9 @@ describe("validateFormInput", () => {
   test("returns no error for valid payload", () => {
     const errors = validateFormInput({
       email: "a.agostini.fr@gmail.com",
-      firstName: "Alex",
-      lastName: "Agostini",
+      firstName: "John",
+      lastName: "Doe",
+      phone: "",
     });
 
     expect(errors).toEqual({});
