@@ -185,6 +185,30 @@ describe("resolveAppConfig", () => {
     ]);
   });
 
+  test("accepts mailto destination links", () => {
+    const config = resolveAppConfig({
+      VITE_DESTINATION_LINKS_JSON: JSON.stringify([
+        {
+          label: { en: "Support", fr: "Support" },
+          url: "mailto:support@example.com?subject=Scan%202%20Pass",
+          order: 2,
+          enabled: true,
+        },
+        {
+          label: { en: "Docs", fr: "Docs" },
+          url: "https://example.com/docs",
+          order: 1,
+          enabled: true,
+        },
+      ]),
+    });
+
+    expect(config.destinationLinks.map((link) => link.url)).toEqual([
+      "https://example.com/docs",
+      "mailto:support@example.com?subject=Scan%202%20Pass",
+    ]);
+  });
+
   test("ignores malformed destination link payloads safely", () => {
     const malformed = resolveAppConfig({
       VITE_DESTINATION_LINKS_JSON: "{invalid",

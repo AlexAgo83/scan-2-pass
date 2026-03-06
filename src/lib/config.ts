@@ -230,7 +230,7 @@ function cleanEmail(value: EnvValue, fallback: string): string {
   return fallback;
 }
 
-function cleanHttpUrl(value: unknown): string {
+function cleanDestinationUrl(value: unknown): string {
   if (typeof value !== "string") {
     return "";
   }
@@ -242,7 +242,15 @@ function cleanHttpUrl(value: unknown): string {
 
   try {
     const parsedUrl = new URL(nextValue);
-    if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+    const protocol = parsedUrl.protocol;
+    if (
+      protocol !== "http:" &&
+      protocol !== "https:" &&
+      protocol !== "mailto:"
+    ) {
+      return "";
+    }
+    if (protocol === "mailto:" && !parsedUrl.pathname.trim()) {
       return "";
     }
     return parsedUrl.toString();
@@ -284,7 +292,7 @@ function cleanDestinationLinks(value: EnvValue): DestinationLinkConfig[] {
       continue;
     }
 
-    const url = cleanHttpUrl(candidate.url);
+    const url = cleanDestinationUrl(candidate.url);
     if (!url) {
       continue;
     }

@@ -44,7 +44,7 @@ All frontend env variables are public at runtime. Do not place secrets in `.env`
 - `VITE_REDIRECT_URL`: redirect URL after successful form submit.
 - `VITE_DESTINATION_LINKS_JSON`: optional JSON array for post-submit destinations. Entry schema:
   - `label.en` and `label.fr`: localized labels for the hub;
-  - `url`: destination URL (`http/https` only);
+  - `url`: destination URL (`http/https/mailto` only);
   - `order`: numeric sort order (ascending);
   - `enabled`: boolean.
 - `VITE_FORMSUBMIT_RECEIVER`: receiver email. Required and validated in non-development runtimes.
@@ -62,7 +62,7 @@ For hex values in `.env`, wrap them in quotes (example: `VITE_THEME_PRIMARY_COLO
 
 Example for `VITE_DESTINATION_LINKS_JSON`:
 
-`[{"label":{"fr":"Voir la video","en":"Watch the video"},"url":"https://youtube.com/watch?v=demo","order":1,"enabled":true},{"label":{"fr":"Telecharger le guide","en":"Download the guide"},"url":"https://example.com/guide.pdf","order":2,"enabled":true}]`
+`[{"label":{"fr":"Voir la video","en":"Watch the video"},"url":"https://youtube.com/watch?v=demo","order":1,"enabled":true},{"label":{"fr":"Contacter le support","en":"Contact support"},"url":"mailto:support@example.com?subject=Scan%202%20Pass","order":2,"enabled":true}]`
 
 ## FormSubmit note
 
