@@ -50,6 +50,14 @@ function normalizePhone(value: unknown): string {
   return nextValue;
 }
 
+function normalizeActivitySector(value: unknown): string {
+  const nextValue = typeof value === "string" ? value.trim() : "";
+  if (!nextValue || nextValue.length > 80) {
+    return "";
+  }
+  return nextValue;
+}
+
 function normalizePrefillInput(
   input: Partial<ContactFormData> | null | undefined,
 ): ContactFormData {
@@ -58,6 +66,7 @@ function normalizePrefillInput(
     firstName: normalizeName(input?.firstName),
     lastName: normalizeName(input?.lastName),
     phone: normalizePhone(input?.phone),
+    activitySector: normalizeActivitySector(input?.activitySector),
   };
 }
 
@@ -79,6 +88,12 @@ function parseQueryPrefill(search: string): ContactFormData {
       params.get("lastname") ||
       "",
     phone: params.get("phone") || params.get("telephone") || params.get("tel") || "",
+    activitySector:
+      params.get("activitySector") ||
+      params.get("activity_sector") ||
+      params.get("sector") ||
+      params.get("industry") ||
+      "",
   });
 }
 
@@ -145,6 +160,11 @@ function mergePrefill(
       baseData.lastName,
     ),
     phone: pickFirstNonEmpty(queryPrefill.phone, storagePrefill.phone, baseData.phone),
+    activitySector: pickFirstNonEmpty(
+      queryPrefill.activitySector,
+      storagePrefill.activitySector,
+      baseData.activitySector,
+    ),
   };
 }
 

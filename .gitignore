@@ -28,3 +28,6 @@ playwright-report
 *.njsproj
 *.sln
 *.sw?
+AGENTS.md
+LOGICS.md
+logics/.cache/

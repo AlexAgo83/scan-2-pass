@@ -154,7 +154,8 @@
   color: color-mix(in srgb, var(--theme-text) 70%, #6b7280);
 }
 
-.contact-form input {
+.contact-form input,
+.contact-form select {
   width: 100%;
   border: 1.4px solid rgba(17, 24, 39, 0.22);
   border-radius: 12px;
@@ -168,7 +169,12 @@
   color: #6b7280;
 }
 
-.contact-form input:focus {
+.contact-form select {
+  appearance: auto;
+}
+
+.contact-form input:focus,
+.contact-form select:focus {
   border-color: var(--theme-primary);
   outline: 3px solid color-mix(in srgb, var(--theme-primary) 26%, transparent);
   outline-offset: 1px;

@@ -32,6 +32,7 @@ describe("resolveInitialFormData", () => {
         firstName: "StorageFirst",
         lastName: "StorageLast",
         phone: "+1 555 000 1111",
+        activitySector: "technology",
       }),
     );
 
@@ -41,8 +42,9 @@ describe("resolveInitialFormData", () => {
         firstName: "BaseFirst",
         lastName: "BaseLast",
         phone: "",
+        activitySector: "",
       },
-      "?email=query@example.com&firstName=QueryFirst",
+      "?email=query@example.com&firstName=QueryFirst&sector=retail",
       storage,
     );
 
@@ -50,6 +52,7 @@ describe("resolveInitialFormData", () => {
     expect(initial.firstName).toBe("QueryFirst");
     expect(initial.lastName).toBe("StorageLast");
     expect(initial.phone).toBe("+1 555 000 1111");
+    expect(initial.activitySector).toBe("retail");
   });
 
   test("keeps documented precedence with non-empty competing sources", () => {
@@ -59,6 +62,7 @@ describe("resolveInitialFormData", () => {
         firstName: "StorageFirst",
         lastName: "StorageLast",
         phone: "+1 111 111 1111",
+        activitySector: "technology",
       }),
     );
 
@@ -68,6 +72,7 @@ describe("resolveInitialFormData", () => {
         firstName: "BaseFirst",
         lastName: "BaseLast",
         phone: "+1 222 222 2222",
+        activitySector: "education",
       },
       "?email=query@example.com&lastName=QueryLast",
       storage,
@@ -78,6 +83,7 @@ describe("resolveInitialFormData", () => {
       firstName: "StorageFirst",
       lastName: "QueryLast",
       phone: "+1 111 111 1111",
+      activitySector: "technology",
     });
   });
 
@@ -88,11 +94,12 @@ describe("resolveInitialFormData", () => {
         firstName: "",
         lastName: "Ok",
         phone: "  ",
+        activitySector: "x".repeat(81),
       }),
     );
 
     const initial = resolveInitialFormData(
-      { email: "", firstName: "", lastName: "", phone: "" },
+      { email: "", firstName: "", lastName: "", phone: "", activitySector: "" },
       "?email=invalid&firstName=&lastName=Doe",
       storage,
     );
@@ -101,11 +108,12 @@ describe("resolveInitialFormData", () => {
     expect(initial.firstName).toBe("");
     expect(initial.lastName).toBe("Doe");
     expect(initial.phone).toBe("");
+    expect(initial.activitySector).toBe("");
   });
 
   test("reads phone from query aliases", () => {
     const initial = resolveInitialFormData(
-      { email: "", firstName: "", lastName: "", phone: "" },
+      { email: "", firstName: "", lastName: "", phone: "", activitySector: "" },
       "?email=query@example.com&telephone=%2B33%206%2012%2034%2056%2078",
       null,
     );
@@ -115,6 +123,7 @@ describe("resolveInitialFormData", () => {
       firstName: "",
       lastName: "",
       phone: "+33 6 12 34 56 78",
+      activitySector: "",
     });
   });
 
@@ -128,17 +137,24 @@ describe("resolveInitialFormData", () => {
           firstName: "Old",
           lastName: "Data",
           phone: "+1 333 333 3333",
+          activitySector: "technology",
         },
       }),
     );
 
     const initial = resolveInitialFormData(
-      { email: "", firstName: "", lastName: "", phone: "" },
+      { email: "", firstName: "", lastName: "", phone: "", activitySector: "" },
       "",
       storage,
     );
 
-    expect(initial).toEqual({ email: "", firstName: "", lastName: "", phone: "" });
+    expect(initial).toEqual({
+      email: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
+      activitySector: "",
+    });
     nowSpy.mockRestore();
   });
 
@@ -154,6 +170,7 @@ describe("resolveInitialFormData", () => {
             firstName: "Old",
             lastName: "Data",
             phone: "+1 333 333 3333",
+            activitySector: "technology",
           },
         }),
       setItem: vi.fn(),
@@ -161,7 +178,7 @@ describe("resolveInitialFormData", () => {
     };
 
     resolveInitialFormData(
-      { email: "", firstName: "", lastName: "", phone: "" },
+      { email: "", firstName: "", lastName: "", phone: "", activitySector: "" },
       "",
       storage,
     );
@@ -177,15 +194,22 @@ describe("resolveInitialFormData", () => {
       firstName: "A",
       lastName: "B",
       phone: "+1 555 444 3333",
+      activitySector: "technology",
     });
 
     clearFormPrefill(storage);
     const initial = resolveInitialFormData(
-      { email: "", firstName: "", lastName: "", phone: "" },
+      { email: "", firstName: "", lastName: "", phone: "", activitySector: "" },
       "",
       storage,
     );
 
-    expect(initial).toEqual({ email: "", firstName: "", lastName: "", phone: "" });
+    expect(initial).toEqual({
+      email: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
+      activitySector: "",
+    });
   });
 });

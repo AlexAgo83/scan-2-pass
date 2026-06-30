@@ -25,6 +25,10 @@ interface FormTranslations {
   phoneLabel: string;
   phoneOptionalLabel: string;
   phonePlaceholder: string;
+  activitySectorLabel: string;
+  activitySectorOptionalLabel: string;
+  activitySectorPlaceholder: string;
+  activitySectorOptions: Array<{ value: string; label: string }>;
   submit: string;
   submitting: string;
   submitRecovery: string;
@@ -55,6 +59,24 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       phoneLabel: "Phone",
       phoneOptionalLabel: "Optional",
       phonePlaceholder: "+1 555 123 4567",
+      activitySectorLabel: "Industry",
+      activitySectorOptionalLabel: "Optional",
+      activitySectorPlaceholder: "Select an industry",
+      activitySectorOptions: [
+        { value: "construction", label: "Construction" },
+        { value: "industry", label: "Manufacturing" },
+        { value: "retail", label: "Retail" },
+        { value: "healthcare", label: "Healthcare" },
+        { value: "education", label: "Education" },
+        { value: "real_estate", label: "Real estate" },
+        { value: "hospitality", label: "Hospitality" },
+        { value: "business_services", label: "Business services" },
+        { value: "technology", label: "Technology" },
+        { value: "transport_logistics", label: "Transport / Logistics" },
+        { value: "finance_insurance", label: "Finance / Insurance" },
+        { value: "public_sector", label: "Public sector" },
+        { value: "other", label: "Other" },
+      ],
       submit: "Continue",
       submitting: "Submitting...",
       submitRecovery:
@@ -84,6 +106,24 @@ const TRANSLATIONS: Record<SupportedLocale, Translations> = {
       phoneLabel: "Téléphone",
       phoneOptionalLabel: "Optionnel",
       phonePlaceholder: "+33 6 12 34 56 78",
+      activitySectorLabel: "Secteur d'activité",
+      activitySectorOptionalLabel: "Optionnel",
+      activitySectorPlaceholder: "Selectionnez un secteur",
+      activitySectorOptions: [
+        { value: "construction", label: "Construction / BTP" },
+        { value: "industry", label: "Industrie" },
+        { value: "retail", label: "Retail / Commerce" },
+        { value: "healthcare", label: "Sante" },
+        { value: "education", label: "Education" },
+        { value: "real_estate", label: "Immobilier" },
+        { value: "hospitality", label: "Hotellerie / Restauration" },
+        { value: "business_services", label: "Services aux entreprises" },
+        { value: "technology", label: "Technologie" },
+        { value: "transport_logistics", label: "Transport / Logistique" },
+        { value: "finance_insurance", label: "Finance / Assurance" },
+        { value: "public_sector", label: "Secteur public" },
+        { value: "other", label: "Autre" },
+      ],
       submit: "Continuer",
       submitting: "Envoi en cours...",
       submitRecovery:

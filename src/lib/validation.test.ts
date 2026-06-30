@@ -8,6 +8,7 @@ describe("validateFormInput", () => {
       firstName: "",
       lastName: "",
       phone: "",
+      activitySector: "",
     });
 
     expect(errors.email).toBeDefined();
@@ -22,6 +23,7 @@ describe("validateFormInput", () => {
       firstName: "John",
       lastName: "Doe",
       phone: "",
+      activitySector: "",
     });
 
     expect(errors.email).toBe("Please enter a valid email address.");
@@ -34,6 +36,7 @@ describe("validateFormInput", () => {
         firstName: "",
         lastName: "",
         phone: "",
+        activitySector: "",
       },
       {
         firstNameRequired: "Le prénom est requis.",
@@ -54,6 +57,7 @@ describe("validateFormInput", () => {
       firstName: "John",
       lastName: "Doe",
       phone: "",
+      activitySector: "",
     });
 
     expect(errors).toEqual({});

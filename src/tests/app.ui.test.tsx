@@ -17,6 +17,7 @@ describe("App UI", () => {
     expect(screen.getByLabelText("First name")).toBeInTheDocument();
     expect(screen.getByLabelText("Last name")).toBeInTheDocument();
     expect(screen.getByLabelText(/Phone/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Industry/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Continue" })).toBeInTheDocument();
   });
 

@@ -162,6 +162,26 @@ function FormView({
           onChange={onInputChange}
         />
 
+        <label htmlFor="activitySector" className="field-label--optional">
+          <span>{copy.form.activitySectorLabel}</span>
+          <span className="optional-tag">
+            {copy.form.activitySectorOptionalLabel}
+          </span>
+        </label>
+        <select
+          id="activitySector"
+          name="activitySector"
+          value={formData.activitySector}
+          onChange={onInputChange}
+        >
+          <option value="">{copy.form.activitySectorPlaceholder}</option>
+          {copy.form.activitySectorOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? copy.form.submitting : copy.form.submit}
         </button>

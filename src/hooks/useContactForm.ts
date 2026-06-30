@@ -24,9 +24,16 @@ const EMPTY_FORM_DATA: ContactFormData = {
   firstName: "",
   lastName: "",
   phone: "",
+  activitySector: "",
 };
 
-const FORM_FIELD_NAMES = ["email", "firstName", "lastName", "phone"] as const;
+const FORM_FIELD_NAMES = [
+  "email",
+  "firstName",
+  "lastName",
+  "phone",
+  "activitySector",
+] as const;
 type FormFieldName = (typeof FORM_FIELD_NAMES)[number];
 const SUBMIT_RECOVERY_TIMEOUT_MS = 12_000;
 
@@ -39,7 +46,9 @@ interface UseContactFormResult {
   errors: ValidationErrors;
   isSubmitting: boolean;
   submitRecoveryMessage: string;
-  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onInputChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
@@ -81,23 +90,26 @@ export function useContactForm(
     clearSubmitRecoveryTimer();
   }, [clearSubmitRecoveryTimer]);
 
-  const onInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (!isFormFieldName(name)) {
-      return;
-    }
-
-    setFormData((current) => ({ ...current, [name]: value }));
-    setSubmitRecoveryMessage("");
-    setErrors((current) => {
-      if (!current[name]) {
-        return current;
+  const onInputChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const { name, value } = event.target;
+      if (!isFormFieldName(name)) {
+        return;
       }
-      const next = { ...current };
-      delete next[name];
-      return next;
-    });
-  }, []);
+
+      setFormData((current) => ({ ...current, [name]: value }));
+      setSubmitRecoveryMessage("");
+      setErrors((current) => {
+        if (!current[name]) {
+          return current;
+        }
+        const next = { ...current };
+        delete next[name];
+        return next;
+      });
+    },
+    [],
+  );
 
   const onSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
