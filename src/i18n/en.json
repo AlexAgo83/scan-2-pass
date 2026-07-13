@@ -1,0 +1,46 @@
+{
+  "form": {
+    "logoAlt": "Site logo",
+    "honeypotLabel": "Do not fill this field",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "firstNameLabel": "First name",
+    "firstNamePlaceholder": "John",
+    "lastNameLabel": "Last name",
+    "lastNamePlaceholder": "Doe",
+    "phoneLabel": "Phone",
+    "phoneOptionalLabel": "Optional",
+    "phonePlaceholder": "+1 555 123 4567",
+    "activitySectorLabel": "Industry",
+    "activitySectorOptionalLabel": "Optional",
+    "activitySectorPlaceholder": "Select an industry",
+    "activitySectorOptions": {
+      "construction": "Construction",
+      "industry": "Manufacturing",
+      "retail": "Retail",
+      "healthcare": "Healthcare",
+      "education": "Education",
+      "real_estate": "Real estate",
+      "hospitality": "Hospitality",
+      "business_services": "Business services",
+      "technology": "Technology",
+      "transport_logistics": "Transport / Logistics",
+      "finance_insurance": "Finance / Insurance",
+      "public_sector": "Public sector",
+      "other": "Other"
+    },
+    "submit": "Continue",
+    "submitting": "Submitting...",
+    "submitRecovery": "Submission took longer than expected. Please review your details and try again."
+  },
+  "hub": {
+    "title": "Choose your content",
+    "subtitle": "Select a destination to continue."
+  },
+  "validation": {
+    "firstNameRequired": "First name is required.",
+    "lastNameRequired": "Last name is required.",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Please enter a valid email address."
+  }
+}

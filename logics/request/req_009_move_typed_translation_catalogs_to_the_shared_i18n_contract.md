@@ -1,9 +1,9 @@
 ## req_009_move_typed_translation_catalogs_to_the_shared_i18n_contract - Move typed translation catalogs to the shared i18n contract
 > From version: 1.2.0
 > Schema version: 1.0
-> Status: Draft
+> Status: Done
 > Understanding: 100
-> Confidence: 97
+> Confidence: 99
 > Complexity: Medium
 > Theme: Internationalization migration
 > Reminder: Update status/understanding/confidence and linked backlog/task references when you edit this doc.
@@ -69,3 +69,4 @@
 
 # Backlog
 - none
+- `item_020_move_typed_translation_catalogs_to_the_shared_i18n_contract`

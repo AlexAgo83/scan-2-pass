@@ -1,0 +1,46 @@
+{
+  "form": {
+    "logoAlt": "Logo du site",
+    "honeypotLabel": "Ne remplissez pas ce champ",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "vous@exemple.com",
+    "firstNameLabel": "Prénom",
+    "firstNamePlaceholder": "Jean",
+    "lastNameLabel": "Nom",
+    "lastNamePlaceholder": "Dupont",
+    "phoneLabel": "Téléphone",
+    "phoneOptionalLabel": "Optionnel",
+    "phonePlaceholder": "+33 6 12 34 56 78",
+    "activitySectorLabel": "Secteur d'activité",
+    "activitySectorOptionalLabel": "Optionnel",
+    "activitySectorPlaceholder": "Selectionnez un secteur",
+    "activitySectorOptions": {
+      "construction": "Construction / BTP",
+      "industry": "Industrie",
+      "retail": "Retail / Commerce",
+      "healthcare": "Sante",
+      "education": "Education",
+      "real_estate": "Immobilier",
+      "hospitality": "Hotellerie / Restauration",
+      "business_services": "Services aux entreprises",
+      "technology": "Technologie",
+      "transport_logistics": "Transport / Logistique",
+      "finance_insurance": "Finance / Assurance",
+      "public_sector": "Secteur public",
+      "other": "Autre"
+    },
+    "submit": "Continuer",
+    "submitting": "Envoi en cours...",
+    "submitRecovery": "L'envoi prend plus de temps que prevu. Verifiez vos informations puis reessayez."
+  },
+  "hub": {
+    "title": "Choisissez votre contenu",
+    "subtitle": "Selectionnez une destination pour continuer."
+  },
+  "validation": {
+    "firstNameRequired": "Le prénom est requis.",
+    "lastNameRequired": "Le nom est requis.",
+    "emailRequired": "L'adresse e-mail est requise.",
+    "emailInvalid": "Veuillez saisir une adresse e-mail valide."
+  }
+}
