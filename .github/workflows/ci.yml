@@ -24,8 +24,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -36,23 +34,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Logics docs lint
-        run: python3 logics/skills/logics-doc-linter/scripts/logics_lint.py --require-status
+      - name: Install Logics Manager
+        run: npm install --global @grifhinz/logics-manager@2.17.1
 
-      - name: Logics workflow sync guard
-        run: |
-          python3 logics/skills/logics-flow-manager/scripts/logics_flow.py sync close-eligible-requests
-          git diff --exit-code -- logics/request
+      - name: Logics docs lint
+        run: logics-manager lint --require-status
 
       - name: Logics workflow audit (baseline, blocking)
-        run: python3 logics/skills/logics-flow-manager/scripts/workflow_audit.py --legacy-cutoff-version 1.1.0 --group-by-doc
+        run: logics-manager audit --legacy-cutoff-version 1.1.0 --group-by-doc
 
       - name: Logics workflow audit (strict report, non-blocking)
         continue-on-error: true
-        run: python3 logics/skills/logics-flow-manager/scripts/workflow_audit.py --format json
-
-      - name: Logics Python tests
-        run: python3 -m unittest discover -s logics/skills/tests -p "test_*.py" -v
+        run: logics-manager audit --format json
 
       - name: Lint
         run: npm run lint
